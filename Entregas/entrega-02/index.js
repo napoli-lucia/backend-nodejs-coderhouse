@@ -2,7 +2,7 @@ const path = require("path");
 const ProductManager = require("./productManager");
 
 const projectProducts = async () => {
-    console.log('INICIANDO EL PROYECTO MANEJADOR DE PRODUCTOS');
+    console.log('INICIANDO EL PROYECTO PRODUCT MANAGER');
     try {
         const pathBase = path.join(__dirname, "db.json")
         const manager = new ProductManager(pathBase);

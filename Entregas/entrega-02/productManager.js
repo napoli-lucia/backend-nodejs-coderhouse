@@ -33,11 +33,9 @@ class ProductManager{
             }
             
             //Id autoincrementable           
-            if (allProducts.products.length === 0) {
-                product.id = 1;
-            } else {
-                product.id = allProducts.products[allProducts.products.length - 1].id + 1;
-            }
+            (allProducts.products.length === 0) 
+            ? product.id = 1 
+            : product.id = allProducts.products[allProducts.products.length - 1].id + 1;
             
             //Agrego el producto
             allProducts.products.push(product);
@@ -64,7 +62,6 @@ class ProductManager{
     async getProductById(id){
         try {
             const allProducts = await this.getProducts();
-            
             const productIndex = allProducts.products.findIndex((product) => product.id === id);
 
             (productIndex === -1) ? console.log("Not found") : console.log(allProducts.products[productIndex]);
@@ -76,46 +73,56 @@ class ProductManager{
 
 
     async updateProduct(id, newData) {
-        const allProducts = await this.getProducts();
+        try {
+            const allProducts = await this.getProducts();
+            const productIndex = allProducts.products.findIndex((product) => product.id === id);
+    
+            if(productIndex === -1){
+                console.log(`No se puede actualizar el producto con id ${id} porque no existe`);
             
-        const productIndex = allProducts.products.findIndex((product) => product.id === id);
+            } else{
+                const product = allProducts.products[productIndex];
+                
+                Object.keys(newData).forEach((element) => {
+                    if(Object.keys(product).includes(element)){
+                        product[element] = newData[element];
+                    }
+                });
+                
+                allProducts.products[productIndex] = product;
+    
+                await fs.writeFile(this.path, JSON.stringify(allProducts));
+                console.log(`Se actualizó el producto con id ${id}`);            
+            }	
+            
+        } catch (error) {
+            console.log("~ ProductManager ~ updateProduct ~ error:", error);
+        }
 
-        if(productIndex === -1){
-            console.log("No se puede actualizar el producto con id ", id, " porque no existe");
-        
-        } else{
-            const product = allProducts.products[productIndex];
-            
-            Object.keys(newData).forEach((element) => {
-                if(Object.keys(product).includes(element)){
-                    product[element] = newData[element];
-                }
-            });
-            
-            allProducts.products[productIndex] = product;
-
-            await fs.writeFile(this.path, JSON.stringify(allProducts));
-            console.log("Se actualizo el producto con id ", id);           
-            
-        }	
 	}
 
 
     async deleteProduct(id) {
-		const allProducts = await this.getProducts();
+        try {
+            const allProducts = await this.getProducts(); 
+            const productIndex = allProducts.products.findIndex((product) => product.id === id);
             
-        const productIndex = allProducts.products.findIndex((product) => product.id === id);
-
-        if(productIndex === -1){
-            console.log("No se puede eliminar el producto con id ", id, " porque no existe");
-        
-        } else{            
-            allProducts.products.splice(productIndex,1);
-
-            await fs.writeFile(this.path, JSON.stringify(allProducts));
-            console.log("Se eliminó el producto con id ", id);           
+    
+            if(productIndex === -1){
+                console.log(`No se puede eliminar el producto con id ${id} porque no existe`);
+            
+            } else{            
+                allProducts.products.splice(productIndex,1);
+    
+                await fs.writeFile(this.path, JSON.stringify(allProducts));
+                console.log(`Se eliminó el producto con id ${id}`);           
+            }
+            
+        } catch (error) {
+            console.log("~ ProductManager ~ deleteProduct ~ error:", error);
         }
 	}
+
 }
 
 
