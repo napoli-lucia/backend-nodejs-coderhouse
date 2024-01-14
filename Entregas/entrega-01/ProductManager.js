@@ -1,6 +1,3 @@
-//DESAFÍO ENTREGABLE
-//Lucia Belen Napoli
-
 class ProductManager{
     constructor(){
         this.products = [];
@@ -17,19 +14,19 @@ class ProductManager{
     }    
 
     addProduct(product){
-        //Chequeo que esten todos los campos
-        if(!this.#allProperties(Object.keys(product))){
-            console.log('Producto no agregado. Faltan datos!');
-            return;
-        }
-
         //Chequeo que el codigo no se repita
         const codigos = this.products.map((product) => product.code);
         if(codigos.includes(product.code)){
             console.log('Producto invalido. El codigo ya existe');
             return;
         }
-        
+
+        //Chequeo que esten todos los campos
+        if(!this.#allProperties(Object.keys(product))){
+            console.log('Producto no agregado. Faltan datos!');
+            return;
+        }
+
         //Id autoincrementable
         if (this.products.length === 0) {
             product.id = 1;
@@ -51,7 +48,6 @@ class ProductManager{
         (productId === -1) ? console.log("Not found") : console.log(this.products[productId]);
     }
 }
-
 
 
 /*Productos*/
