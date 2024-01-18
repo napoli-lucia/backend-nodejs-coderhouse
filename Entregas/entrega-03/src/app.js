@@ -36,6 +36,13 @@ app.get("/products/:pid", async (req, res) => {
     res.send(product)
 
 });
+
+
+app.delete("/products/:pid", async (req, res) => {
+    console.log("Get param", req.params);
+    const product = await manager.deleteProduct(Number(req.params.pid));
+    res.status(product.status).send(product.message);
+});
     
 
 

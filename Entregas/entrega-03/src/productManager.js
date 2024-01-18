@@ -22,14 +22,14 @@ class ProductManager{
             //Chequeo que el codigo no se repita
             const codigos = allProducts.products.map((product) => product.code);
             if(codigos.includes(product.code)){
-                console.log('Producto invalido. El codigo ya existe');
-                return;
+                //console.log('Producto invalido. El codigo ya existe');
+                return {error: "Producto invalido. El codigo ya existe"};
             }
     
             //Chequeo que esten todos los campos
             if(!this.#allProperties(Object.keys(product))){
-                console.log('Producto no agregado. Faltan datos!');
-                return;
+                //console.log('Producto no agregado. Faltan datos!');
+                return {error: "Producto no agregado. Faltan datos!"};
             }
             
             //Id autoincrementable           
@@ -40,9 +40,9 @@ class ProductManager{
             //Agrego el producto
             allProducts.products.push(product);
             await fs.writeFile(this.path, JSON.stringify(allProducts));
-            console.log("Producto agregado!");
-    
-    
+            //console.log("Producto agregado!");
+            return {message: "Producto agregado!"};
+            
         } catch (error) {
             console.log("~ ProductManager ~ addProduct ~ error:", error);
         }
@@ -111,15 +111,14 @@ class ProductManager{
             const allProducts = await this.getProducts(); 
             const productIndex = allProducts.products.findIndex((product) => product.id === id);
             
-    
             if(productIndex === -1){
-                console.log(`No se puede eliminar el producto con id ${id} porque no existe`);
+                return {status: 404, message: "Not found"};
             
             } else{            
                 allProducts.products.splice(productIndex,1);
-    
                 await fs.writeFile(this.path, JSON.stringify(allProducts));
-                console.log(`Se eliminó el producto con id ${id}`);           
+                return {status: 200, message: `Se eliminó el producto con id ${id}`};
+                           
             }
             
         } catch (error) {
