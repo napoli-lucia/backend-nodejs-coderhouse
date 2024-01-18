@@ -23,13 +23,13 @@ class ProductManager{
             const codigos = allProducts.products.map((product) => product.code);
             if(codigos.includes(product.code)){
                 //console.log('Producto invalido. El codigo ya existe');
-                return {error: "Producto invalido. El codigo ya existe"};
+                return {status: 400, message: "Producto invalido. El codigo ya existe"};
             }
     
             //Chequeo que esten todos los campos
             if(!this.#allProperties(Object.keys(product))){
                 //console.log('Producto no agregado. Faltan datos!');
-                return {error: "Producto no agregado. Faltan datos!"};
+                return {status: 400, message: "Producto no agregado. Faltan datos!"};
             }
             
             //Id autoincrementable           
@@ -41,7 +41,7 @@ class ProductManager{
             allProducts.products.push(product);
             await fs.writeFile(this.path, JSON.stringify(allProducts));
             //console.log("Producto agregado!");
-            return {message: "Producto agregado!"};
+            return {status: 200, message: "Producto agregado!"};
             
         } catch (error) {
             console.log("~ ProductManager ~ addProduct ~ error:", error);

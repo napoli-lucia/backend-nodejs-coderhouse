@@ -11,6 +11,8 @@ const PORT = 8080;
 
 const app = express();
 
+app.use(express.urlencoded({ extends: true }));
+app.use(express.json()); // middleware global
 
 app.get("/", (req, res) => {
     res.send(`API LIVE ${PORT}!!!!`);
@@ -42,6 +44,15 @@ app.delete("/products/:pid", async (req, res) => {
     console.log("Get param", req.params);
     const product = await manager.deleteProduct(Number(req.params.pid));
     res.status(product.status).send(product.message);
+});
+
+
+app.post("/product", async (req, res) => {
+    const product = req.body;
+    console.log("🚀 ~ app.post ~ product:", product)
+
+    const result = await manager.addProduct(product);
+    res.status(result.status).send(result.message);
 });
     
 
