@@ -33,3 +33,8 @@ recibir por req.params el pid
 (product Id), y devolver sólo el
 producto solicitado, en lugar de
 todos los productos.
+
+### Extras
+- POST
+- DELETE
+- PUT 

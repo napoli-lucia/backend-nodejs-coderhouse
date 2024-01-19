@@ -22,14 +22,12 @@ class ProductManager{
             //Chequeo que el codigo no se repita
             const codigos = allProducts.products.map((product) => product.code);
             if(codigos.includes(product.code)){
-                //console.log('Producto invalido. El codigo ya existe');
-                return {status: 400, message: "Producto invalido. El codigo ya existe"};
+                return {error: "Producto invalido. El codigo ya existe"};
             }
     
             //Chequeo que esten todos los campos
             if(!this.#allProperties(Object.keys(product))){
-                //console.log('Producto no agregado. Faltan datos!');
-                return {status: 400, message: "Producto no agregado. Faltan datos!"};
+                return {error: "Producto no agregado. Faltan datos!"};
             }
             
             //Id autoincrementable           
@@ -40,8 +38,7 @@ class ProductManager{
             //Agrego el producto
             allProducts.products.push(product);
             await fs.writeFile(this.path, JSON.stringify(allProducts));
-            //console.log("Producto agregado!");
-            return {status: 200, message: "Producto agregado!"};
+            return {message: "Producto agregado!"};
             
         } catch (error) {
             console.log("~ ProductManager ~ addProduct ~ error:", error);
@@ -82,7 +79,7 @@ class ProductManager{
             const productIndex = allProducts.products.findIndex((product) => product.id === id);
     
             if(productIndex === -1){
-                console.log(`No se puede actualizar el producto con id ${id} porque no existe`);
+                return {error: `No se puede actualizar el producto con id ${id} porque no existe`};
             
             } else{
                 const product = allProducts.products[productIndex];
@@ -96,13 +93,12 @@ class ProductManager{
                 allProducts.products[productIndex] = product;
     
                 await fs.writeFile(this.path, JSON.stringify(allProducts));
-                console.log(`Se actualizó el producto con id ${id}`);            
+                return {message: `Se actualizó el producto con id ${id}`};
             }	
             
         } catch (error) {
             console.log("~ ProductManager ~ updateProduct ~ error:", error);
         }
-
 	}
 
 
@@ -112,13 +108,11 @@ class ProductManager{
             const productIndex = allProducts.products.findIndex((product) => product.id === id);
             
             if(productIndex === -1){
-                return {status: 404, message: "Not found"};
-            
+                return {error: "Not found"};
             } else{            
                 allProducts.products.splice(productIndex,1);
                 await fs.writeFile(this.path, JSON.stringify(allProducts));
-                return {status: 200, message: `Se eliminó el producto con id ${id}`};
-                           
+                return {message: `Se eliminó el producto con id ${id}`};   
             }
             
         } catch (error) {
