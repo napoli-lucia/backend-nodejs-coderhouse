@@ -7,12 +7,8 @@ class ProductManager{
 
     #allProperties(props){
         const allProps = [ 'title', 'description', 'price', 'thumbnail', 'code', 'stock' ];
-    
-        if(props.length === allProps.length && props.every((val, index) => val === allProps[index])){
-            return true;
-        } else{
-            return false;
-        }
+        
+        return props.length === allProps.length && props.every((val, index) => val === allProps[index]);
     }
 
     async addProduct(product){
@@ -41,7 +37,7 @@ class ProductManager{
             return {message: "Producto agregado!"};
             
         } catch (error) {
-            console.log("~ ProductManager ~ addProduct ~ error:", error);
+            throw new Error(`No se puede agregar el producto\n ${error.message}`);
         }
     }
 
@@ -51,7 +47,7 @@ class ProductManager{
             const allProducts = await fs.readFile(this.path);
             return JSON.parse(allProducts);
         } catch (error) {
-            console.log("~ ProductManager ~ getProducts ~ error:", error);
+            throw new Error(`No se pueden obtener los productos\n ${error.message}`);
         }
     }
 
@@ -68,7 +64,7 @@ class ProductManager{
             }
 
         } catch (error) {
-            console.log("~ ProductManager ~ getProductById ~ error:", error);
+            throw new Error(`No se puede obtener el producto con id ${id}\n ${error.message}`);
         }
     }
 
@@ -97,7 +93,7 @@ class ProductManager{
             }	
             
         } catch (error) {
-            console.log("~ ProductManager ~ updateProduct ~ error:", error);
+            throw new Error(`No se puede actualizar el producto con id ${id}\n ${error.message}`);
         }
 	}
 
@@ -116,7 +112,7 @@ class ProductManager{
             }
             
         } catch (error) {
-            console.log("~ ProductManager ~ deleteProduct ~ error:", error);
+            throw new Error(`No se puede eliminar el producto con id ${id}\n ${error.message}`);
         }
 	}
 }
