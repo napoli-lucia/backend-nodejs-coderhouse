@@ -8,6 +8,10 @@
 
 ## Desafíos entregables
 
-- [Entregable 1](./Entregas/entrega-01/) Clases con ECMAScript
-- [Entregable 2](./Entregas/entrega-02/) Manejo de archivos
-- [Entregable 3](./Entregas/entrega-03/) Servidor con express
+- [Entregable 1](./Entregas-Desafios/entrega-01/) Clases con ECMAScript
+- [Entregable 2](./Entregas-Desafios/entrega-02/) Manejo de archivos
+- [Entregable 3](./Entregas-Desafios/entrega-03/) Servidor con express
+
+## Entregas proyecto
+
+- [Primera entrega](./Entregas-Proyecto/proyecto-01/)
