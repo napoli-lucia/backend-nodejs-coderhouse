@@ -9,12 +9,24 @@ const API_PREFIX = "api";
 app.use(express.urlencoded({ extends: true }));
 app.use(express.json());
 
-app.use(express.static("public"))
+//app.use(express.static("public"))
+app.use(`/static`, express.static(__dirname + "/public"));
 
 
 //USERS ROUTES
 // /api/users
 app.use(`/${API_PREFIX}/users`, usersRoutes)
+
+//PETS ROUTES
+// /api/pets
+app.use(`/${API_PREFIX}/pets`, petsRoutes)
+
+
+app.listen(PORT, () => {
+    console.log(`UP AND RUNNING ON PORT: ${PORT}`);
+  });
+  
+  
 /*
 app.get(`/${API_PREFIX}/users`, (req,res) => {
     return res.json({
@@ -22,21 +34,9 @@ app.get(`/${API_PREFIX}/users`, (req,res) => {
         users: userList
     })
 })*/
-
-//PETS ROUTES
-// /api/pets
-app.use(`/${API_PREFIX}/pets`, petsRoutes)
 /*app.get(`/${API_PREFIX}/pets`, (req,res) => {
     return res.json({
         ok: true,
         users: petsList
     })
 })*/
-
-
-
-
-
-app.listen(PORT, () => {
-    console.log(`UP AND RUNNING ON PORT: ${PORT}`);
-  });
