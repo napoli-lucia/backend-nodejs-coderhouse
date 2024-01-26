@@ -1,5 +1,4 @@
 const fs = require("fs/promises");
-//const { title } = require("process");
 
 class ProductManager{
     constructor(path) {
