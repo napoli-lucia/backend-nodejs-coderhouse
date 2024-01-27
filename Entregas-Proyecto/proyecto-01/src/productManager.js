@@ -6,12 +6,12 @@ class ProductManager{
 	}
 
     #obligatoryProperties(props){
-        const obligatoryProps = [ 'title', 'description', 'price', 'code', 'status', 'stock', 'category' ];
+        const obligatoryProps = [ 'title', 'description', 'price', 'code', 'stock', 'category' ];
         
         let result = true;
         obligatoryProps.forEach(prop => {
             if(!props.includes(prop)){
-                console.log("No lo incluye");
+                console.log(`No incluye la propiedad ${prop}`);
                 result = false;
             }
         });
@@ -22,12 +22,21 @@ class ProductManager{
         const isNumber = x => typeof x === "number";
         const isString = x => typeof x === "string";
         const isBool = x => typeof x === "boolean";
+        const isStringsArray = arr => arr.every(isString);
+
+        if(product.status === null){
+            product.status = true;
+        }
+        
+        if(!product.thumbnails){
+            product.thumbnails = ["sin imagen"];
+        }
 
         let listString = [product.title, product.description, product.code, product.category];
         let listNumber = [product.price, product.stock];
         let listBool = [product.status];
 
-        return listString.every(isString) && listNumber.every(isNumber) && listBool.every(isBool);
+        return listString.every(isString) && listNumber.every(isNumber) && listBool.every(isBool) && isStringsArray(product.thumbnails);
     }
 
     async addProduct(product){

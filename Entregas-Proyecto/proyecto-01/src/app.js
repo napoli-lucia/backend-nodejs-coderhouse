@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extends: true }));
 app.use(express.json());
 
 app.get(`/${API_PREFIX}`, (req, res) => {
-    res.send(`Bienvenido al manager de productos en el puerto ${PORT}!!!!`);
+    res.send(`Bienvenido al manager de productos y carritos en el puerto ${PORT}!!!!`);
 });
 
 
