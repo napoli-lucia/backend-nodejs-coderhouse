@@ -5,7 +5,6 @@ const manager = new CartManager("./src/carrito.json");
 
 const router = Router();
 
-
 // POST /api/carts/
 // Crea un nuevo carrito
 router.post(`/`, async (req, res, next) => {
@@ -48,9 +47,8 @@ router.post(`/:cid/product/:pid`, async (req, res, next) => {
     try {
         const cid = Number(req.params.cid);
         const pid = Number(req.params.pid);
-        const quantity = req.body.quantity;
 
-        const result = await manager.addProductToCart(cid, pid, quantity);
+        const result = await manager.addProductToCart(cid, pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -63,6 +61,5 @@ router.post(`/:cid/product/:pid`, async (req, res, next) => {
         next(error);
     }
 });
-
 
 module.exports = router;

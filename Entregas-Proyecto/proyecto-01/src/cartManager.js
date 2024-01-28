@@ -52,14 +52,13 @@ class CartManager{
                 return allCarts.carts[cartIndex];
             }
 
-
         } catch (error) {
             throw new Error(`No se puede obtener el carrito con id ${id}\n ${error.message}`);
         }
     }
 
 
-    async addProductToCart(cid,pid, quantity){
+    async addProductToCart(cid,pid){
         try {
             const allCarts = await this.#getCarts();
 
@@ -69,22 +68,25 @@ class CartManager{
                 return {error: "Cart not found"};
             } 
             
-            const cart = allCarts.carts[cartIndex];
-            const product = {
-                "id": pid, 
-                "quantity": quantity
+            const cart = allCarts.carts[cartIndex];            
+            
+            const productIndex = cart.products.findIndex((prod) => prod.id === pid);
+
+            if(productIndex === -1){
+                const product = {"id": pid, "quantity": 1};
+                cart.products.push(product);
+            } else{
+                cart.products[productIndex].quantity +=1;
             }
-            cart.products.push(product);
+            
             await fs.writeFile(this.path, JSON.stringify(allCarts));
             return {message: "Producto agregado al carrito!"};
-
 
 
         } catch (error) {
             throw new Error(`No se puede agregar el producto al carrito\n ${error.message}`);
         }
     }
-
 }
 
 module.exports = CartManager; 
