@@ -1,4 +1,5 @@
-const { Router } = require("express")
+const { Router } = require("express");
+const { uploader } = require("../utils");
 
 const router = Router();
 
@@ -20,10 +21,20 @@ router.get(`/:petId`, (req, res) => {
 });
 
 // POST /api/pets/
-router.post(`/`, (req, res) => {
+router.post(`/`, uploader.single("thumbnail"), (req, res) => {
+    const file = req.file;
+    console.log("🚀 ~ router.post ~ file: ******", file);
+
+    if (!file) {
+        return res.status(400).send({ message: "Couldn't upload file" });
+    }
+
     const newPet = req.body;
     console.log("🚀 ~ router.post ~ newPet:", newPet);
     const lastId = petsList.length > 0 ? petsList[petsList.length - 1].id + 1 : 1;
+
+    newPet.thumbnail = `http://localhost:5000/public/uploads/${file.filename}`;
+
     petsList.push({ id: lastId, ...newPet });
 
     res.json({

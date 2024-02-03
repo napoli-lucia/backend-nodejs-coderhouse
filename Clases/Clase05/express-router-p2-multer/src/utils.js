@@ -13,13 +13,13 @@ const storage = multer.diskStorage({
 //cb: callback
   
 const uploader = multer({
-storage,
-onError: function (err, next) {
-    console.log("🚀 ~ err:", err);
-    next();
-},
+  storage,
+  onError: function (err, next) {
+      console.log("🚀 ~ err:", err);
+      next();
+  },
 });
 
 module.exports = {
-uploader,
+  uploader,
 };
