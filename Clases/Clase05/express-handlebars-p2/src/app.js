@@ -1,14 +1,16 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const path = require("path");
-const usersRoutes = require("./routes/users.routes")
+
+const usersRoutes = require("./routes/users.routes");
+const viewsRoutes = require("./routes/views.routes")
 
 const app = express()
 const PORT = 5000;
 const API_PREFIX = "api";
 
-app.use(express.urlencoded({ extends: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extends: true }));
 
 const users = [
   {
@@ -59,6 +61,10 @@ app.use(`/static`, express.static(__dirname + "/public"));
 //USERS ROUTES
 // /api/users
 app.use(`/${API_PREFIX}/users`, usersRoutes)
+
+// enlazar el archivo de las rutas
+// VIEWS ROUTES
+app.use("/", viewsRoutes);
 
 
 // views handlebars engine
