@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "65be764baf786de915a3b40a"
+  },
+  "nombre": "Titito",
+  "especie": "Ave",
+  "edad": 21
+},
+{
+  "_id": {
+    "$oid": "65be76a4af786de915a3b40b"
+  },
+  "nombre": "Coco",
+  "especie": "Reptil",
+  "edad": 20
+}]
