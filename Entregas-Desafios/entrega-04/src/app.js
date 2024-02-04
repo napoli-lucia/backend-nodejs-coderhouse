@@ -56,6 +56,10 @@ app.use(serverErrors);
 
 
 io.on("connection", (socket) => {
-    console.log("Nuevo cliente conectado: ", socket.id);
+    console.log("Cliente conectado: ", socket.id);
+    /*
+    socket.on("products", (data) => {
+        io.sockets.emit("products", data);
+    })*/
   
 })
