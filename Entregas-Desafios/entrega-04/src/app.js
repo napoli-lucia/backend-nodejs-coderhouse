@@ -30,6 +30,7 @@ app.set('views', __dirname + '/views');
 app.set("view engine", "handlebars");
 
 app.use(express.static(__dirname + '/public'));
+console.log("🚀 ~ __dirname:", __dirname)
 
 
 app.get(`/${API_PREFIX}`, (req, res) => {

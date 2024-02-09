@@ -1,0 +1,41 @@
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: purple;
+    font-weight: bold;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: rgb(164, 20, 142);
+    font-weight: bold;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.producto {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.producto img {
+    float: left;
+    margin-right: 10px;
+}

@@ -1,7 +1,7 @@
 <h1>Productos en tiempo real</h1>
 
 <h2>Ingrese un nuevo producto</h2>
-<form action='/api/products' id="create-product" method="post">
+<form action='/api/products' id="create-product" method="post" class="container">
     <label>Titulo</label>
     <input id="title" /><br/>
     <label>Descripcion</label>
@@ -18,17 +18,29 @@
     <input type="submit" value="Agregar">
 </form>
 
+<h2>Elimine un producto</h2>
+<form id="delete" method="delete" class="container">
+    <label>Id producto: </label> 
+    <input id="product-id"/>
+    <button id="send-delete">Eliminar</button>
+</form>
+
 <h2>Productos</h2>
-<div id="real-products">
+<div id="real-products" class="container">
 {{#each products}}
-<ul>
-    <li>ID: {{this.id}}</li>
-    <li>Titulo: {{this.title}}</li>
-    <li>Descripcion: {{this.description}}</li>
-    <li>Codigo: {{this.code}}</li>
-    <li>Stock: {{this.stock}}</li>
-    <li>Categoria: {{this.category}}</li>
-    <li>Precio: {{this.price}}</li>
-</ul>
+<div class="producto">
+    <!-- <img src="../public/imgs/square.png" alt="Producto x"> -->
+    <div class="info">
+      <ul>
+        <li>ID: {{this.id}}</li>
+        <li>Titulo: {{this.title}}</li>
+        <li>Descripcion: {{this.description}}</li>
+        <li>Codigo: {{this.code}}</li>
+        <li>Stock: {{this.stock}}</li>
+        <li>Categoria: {{this.category}}</li>
+        <li>Precio: ${{this.price}}</li>
+      </ul>
+    </div>
+  </div>
 {{/each}}
 </div>
