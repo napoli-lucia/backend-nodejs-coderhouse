@@ -20,6 +20,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/realTimeProducts", (req, res) => {
+    //res.render("realTimeProducts")
     manager.getProducts().then( result => {
         res.render("realTimeProducts", {products: result.products})
     }).catch( err => {
