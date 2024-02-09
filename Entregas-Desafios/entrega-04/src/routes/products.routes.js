@@ -1,6 +1,8 @@
-const { Router } = require("express")
+//const { Router } = require("express")
+import  { Router } from "express";
 
-const ProductManager = require("../managers/productManager");
+//const ProductManager = require("../managers/productManager");
+import {ProductManager} from "../managers/productManager.js";
 const manager = new ProductManager("./src/productos.json");
 
 const router = Router();
@@ -126,4 +128,5 @@ function idErrors(req, res, next) {
     next();
 };
 
-module.exports = router;
+//module.exports = router;
+export default router;

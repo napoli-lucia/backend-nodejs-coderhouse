@@ -1,5 +1,15 @@
 const socket = io();
 
+const form = document.getElementById("create-product");
+const realProducts = document.getElementById("real-products");
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault()
+    const prod = form[0].value;
+    console.log("🚀 ~ form.addEventListener ~ prod:", prod)
+    socket.emit("new-prod", prod)
+  })
+
 /*
 let title = document.getElementById("title")
 let description = document.getElementById("description")

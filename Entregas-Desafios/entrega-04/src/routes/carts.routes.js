@@ -1,6 +1,8 @@
-const { Router } = require("express")
+//const { Router } = require("express")
+import  { Router } from "express";
 
-const CartManager = require("../managers/cartManager");
+//const CartManager = require("../managers/cartManager");
+import {CartManager} from "../managers/cartManager.js";
 const manager = new CartManager("./src/carrito.json");
 
 const router = Router();
@@ -62,4 +64,5 @@ router.post(`/:cid/product/:pid`, async (req, res, next) => {
     }
 });
 
-module.exports = router;
+//module.exports = router;
+export default router;

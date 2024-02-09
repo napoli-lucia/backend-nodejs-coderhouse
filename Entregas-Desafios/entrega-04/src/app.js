@@ -1,23 +1,23 @@
-const express = require("express");
-const handlebars = require("express-handlebars");
-const path = require("path");
+import express from "express";
+import handlebars from "express-handlebars";
+import { Server } from "socket.io";
+import __dirname from "./utils.js";
 
-const productsRoutes = require("./routes/products.routes")
-const cartsRoutes = require("./routes/carts.routes")
-const viewsRoutes = require("./routes/views.routes.js");
+import productsRoutes from "./routes/products.routes.js"
+import cartsRoutes from "./routes/carts.routes.js"
+import viewsRoutes from "./routes/views.routes.js"
 
-//const { Server } = require("socket.io");
+
 
 console.log("SERVER");
-
 const app = express();
 const PORT = 8080;
 const API_PREFIX = "api";
 
-const httpServer = app.listen(PORT, () => console.log(`Server on port ${PORT}`))
-//const io = new Server(httpServer);
-const io = require("socket.io")(httpServer)
-
+const httpServer = app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+const io = new Server(httpServer);
+//const io = require("socket.io")(httpServer)
+//const { Server } = require("socket.io");
 
 app.use(express.urlencoded({ extends: true }));
 app.use(express.json());
@@ -25,10 +25,11 @@ app.use(express.json());
 
 // config handlebars
 app.engine("handlebars", handlebars.engine());
-app.set("views", path.join(`${__dirname}/views`));
+//app.set("views", path.join(`${__dirname}/views`));
+app.set('views', __dirname + '/views');
 app.set("view engine", "handlebars");
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + '/public'));
 
 
 app.get(`/${API_PREFIX}`, (req, res) => {
@@ -55,11 +56,15 @@ function serverErrors(error, req, res, next) {
 app.use(serverErrors);
 
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     console.log("Cliente conectado: ", socket.id);
+
+    //socket.emit("all-msgs", messages)
+    
     /*
-    socket.on("products", (data) => {
-        io.sockets.emit("products", data);
+    socket.on("new-prod", (data) => {
+        console.log("🚀 ~ socket.on ~ data:", data)
+        //io.sockets.emit("products", data);
     })*/
   
 })

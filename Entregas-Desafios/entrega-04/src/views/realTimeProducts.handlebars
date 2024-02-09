@@ -1,7 +1,7 @@
 <h1>Productos en tiempo real</h1>
 
 <h2>Ingrese un nuevo producto</h2>
-<form id="create" method="post">
+<form action='/api/products' id="create-product" method="post">
     <label>Titulo</label>
     <input id="title" /><br/>
     <label>Descripcion</label>
@@ -15,17 +15,11 @@
     <label>Precio</label>
     <input id="price" /><br/>
     
-    <button id="send">Agregar</button>
-</form>
-
-<h2>Elimine un producto</h2>
-<form id="delete" method="delete">
-    <label>Id producto: </label> 
-    <input id="product-id"/>
-    <button id="send-delete">Eliminar</button>
+    <input type="submit" value="Agregar">
 </form>
 
 <h2>Productos</h2>
+<div id="real-products">
 {{#each products}}
 <ul>
     <li>ID: {{this.id}}</li>
@@ -37,3 +31,4 @@
     <li>Precio: {{this.price}}</li>
 </ul>
 {{/each}}
+</div>

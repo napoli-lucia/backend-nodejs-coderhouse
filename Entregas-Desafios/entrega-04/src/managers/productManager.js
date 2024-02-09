@@ -1,4 +1,5 @@
-const fs = require("fs/promises");
+//const fs = require("fs/promises");
+import * as fs from 'fs/promises';
 
 class ProductManager{
     constructor(path) {
@@ -150,4 +151,5 @@ class ProductManager{
 	}
 }
 
-module.exports = ProductManager; 
+//module.exports = ProductManager; 
+export {ProductManager};
