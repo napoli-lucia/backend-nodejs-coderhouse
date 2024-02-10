@@ -3,7 +3,7 @@
 {{#each products}}
 <div class="container">
   <div class="producto">
-    <!-- <img src="../public/imgs/square.png" alt="Producto x"> -->
+      <img src={{this.thumbnails}} alt="Producto {{this.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
     <div class="info">
       <ul>
         <li>ID: {{this.id}}</li>

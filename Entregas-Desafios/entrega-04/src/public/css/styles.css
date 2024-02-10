@@ -29,13 +29,19 @@ h2 {
 }
 
 .producto {
+    display: flex;
     border: 1px solid #ccc;
     margin-bottom: 20px;
     padding: 10px;
-    overflow: hidden;
 }
 
 .producto img {
-    float: left;
-    margin-right: 10px;
+    flex-shrink: 0;
+    max-width:150px;
+    max-height:150px;
+}
+
+.info {
+    flex-grow: 1; 
+    padding-left: 10px;
 }

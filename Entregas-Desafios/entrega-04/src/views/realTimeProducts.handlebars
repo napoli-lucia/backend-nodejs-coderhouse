@@ -28,8 +28,9 @@
 <h2>Productos</h2>
 <div id="real-products" class="container">
 {{#each products}}
-<div class="producto">
-    <!-- <img src="../public/imgs/square.png" alt="Producto x"> -->
+<div class="container">
+  <div class="producto">
+      <img src={{this.thumbnails}} alt="Producto {{this.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
     <div class="info">
       <ul>
         <li>ID: {{this.id}}</li>
@@ -42,5 +43,6 @@
       </ul>
     </div>
   </div>
+</div>
 {{/each}}
 </div>

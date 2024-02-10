@@ -32,8 +32,9 @@ app.set('views', __dirname + '/views');
 app.set("view engine", "handlebars");
 
 app.use(express.static(__dirname + '/public'));
-console.log("🚀 ~ __dirname:", __dirname)
 
+//app.use("/images", express.static(__dirname + "/public/images"));
+app.use(express.static("images")); 
 
 app.get(`/${API_PREFIX}`, (req, res) => {
     res.send(`Bienvenido al manager de productos y carritos en el puerto ${PORT}!!!!`);
@@ -57,6 +58,8 @@ function serverErrors(error, req, res, next) {
 };
 
 app.use(serverErrors);
+
+
 
 
 io.on("connection", async (socket) => {

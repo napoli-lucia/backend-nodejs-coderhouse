@@ -3,7 +3,7 @@ const socket = io();
 const form = document.getElementById("create-product");
 const realProducts = document.getElementById("real-products");
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
     e.preventDefault()
 
     let title = form.elements.title.value;
@@ -13,7 +13,7 @@ form.addEventListener("submit", (e) => {
     let category = form.elements.category.value;
     let price = form.elements.price.value;
 
-    socket.emit("create-prod", {
+    await socket.emit("create-prod", {
         title,
         description,
         code,
