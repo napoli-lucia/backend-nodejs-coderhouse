@@ -11,6 +11,8 @@
 - [Entregable 1](./Entregas-Desafios/entrega-01/) Clases con ECMAScript
 - [Entregable 2](./Entregas-Desafios/entrega-02/) Manejo de archivos
 - [Entregable 3](./Entregas-Desafios/entrega-03/) Servidor con express
+- [Entregable 4](./Entregas-Desafios/entrega-04/) Websockets + Handlebars
+- [Entregable 5](./Entregas-Desafios/entrega-05/) Integracion ecommerce
 
 ## Entregas proyecto
 
