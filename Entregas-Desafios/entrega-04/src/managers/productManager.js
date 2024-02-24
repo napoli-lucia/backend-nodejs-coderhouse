@@ -60,10 +60,8 @@ class ProductManager{
                 return {error: "Producto no agregado. Datos erroneos"};
             }
             
-            //Id autoincrementable           
-            (allProducts.products.length === 0) 
-            ? product.id = 1 
-            : product.id = allProducts.products[allProducts.products.length - 1].id + 1;
+            //Id autoincrementable
+            product.id = allProducts.products.length === 0 ? 1 : allProducts.products.length + 1;
             
             //Agrego el producto
             allProducts.products.push(product);

@@ -3,17 +3,25 @@
 <h2>Ingrese un nuevo producto</h2>
 <form id="create-product" method="post" class="container">
     <label>Titulo</label>
-    <input id="title" /><br/>
+    <input id="title" type="text"/><br/>
+
     <label>Descripcion</label>
-    <input id="description" /><br/>
-    <label>Codigo</label>
-    <input id="code" /><br/>
-    <label>Stock</label>
-    <input id="stock" /><br/>
-    <label>Categoria</label>
-    <input id="category" /><br/>
+    <input id="description" type="text"/><br/>
+
     <label>Precio</label>
-    <input id="price" /><br/>
+    <input id="price" type="number"/><br/>
+
+    <label>Codigo</label>
+    <input id="code" type="text"/><br/>
+
+    <label>Status</label>
+    <input id="status" type="checkbox" value="true"/><br/>
+
+    <label>Stock</label>
+    <input id="stock" type="number"/><br/>
+
+    <label>Categoria</label>
+    <input id="category" type="text"/><br/>
     
     <input type="submit" value="Agregar">
 </form>
@@ -21,7 +29,7 @@
 <h2>Elimine un producto</h2>
 <form id="delete-product" method="delete" class="container">
     <label>Id producto: </label> 
-    <input id="product-id"/>
+    <input id="product-id" placeholder="0" type="number"/>
     <button id="send-delete">Eliminar</button>
 </form>
 
@@ -46,3 +54,7 @@
 </div>
 {{/each}}
 </div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

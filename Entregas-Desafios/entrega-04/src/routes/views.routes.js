@@ -3,7 +3,7 @@ import  { Router } from "express";
 
 //const ProductManager = require("../managers/productManager");
 import {ProductManager} from "../managers/productManager.js";
-const manager = new ProductManager("./src/productos.json");
+const manager = new ProductManager("./src/databases/productos.json");
 
 const router = Router();
 
@@ -20,7 +20,6 @@ router.get("/", (req, res) => {
 })
 
 router.get("/realTimeProducts", (req, res) => {
-    //res.render("realTimeProducts")
     manager.getProducts().then( result => {
         res.render("realTimeProducts", {products: result.products})
     }).catch( err => {

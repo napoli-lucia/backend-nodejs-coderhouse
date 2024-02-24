@@ -3,7 +3,7 @@ import  { Router } from "express";
 
 //const ProductManager = require("../managers/productManager");
 import {ProductManager} from "../managers/productManager.js";
-const manager = new ProductManager("./src/productos.json");
+const manager = new ProductManager("./src/databases/productos.json");
 
 const router = Router();
 

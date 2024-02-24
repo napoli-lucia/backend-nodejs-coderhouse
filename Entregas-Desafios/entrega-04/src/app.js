@@ -6,10 +6,7 @@ import __dirname from "./utils.js";
 import productsRoutes from "./routes/products.routes.js"
 import cartsRoutes from "./routes/carts.routes.js"
 import viewsRoutes from "./routes/views.routes.js"
-
-import {ProductManager} from "./managers/productManager.js";
-const manager = new ProductManager("./src/productos.json");
-
+import socketProducts from "./listeners/socketProducts.js";
 
 console.log("SERVER");
 const app = express();
@@ -59,29 +56,4 @@ function serverErrors(error, req, res, next) {
 
 app.use(serverErrors);
 
-
-
-
-io.on("connection", async (socket) => {
-    console.log("Cliente conectado: ", socket.id);
-
-    const listadeproductos = await manager.getProducts();
-    socket.emit("real-products",listadeproductos)
-    
-    socket.on("create-prod", async (data) => {
-        console.log("🚀 ~ socket.on ~ data:", data)
-        await manager.addProduct(data);
-        
-        const listadeproductos = await manager.getProducts();
-        socket.emit("real-products",listadeproductos)
-    })
-
-    socket.on("delete-prod", async (pid) => {
-        //console.log("🚀 ~ socket.on ~ data:", data)
-        await manager.deleteProduct(pdi);
-        
-        listadeproductos = await manager.getProducts();
-        socket.emit("real-products",listadeproductos)
-    })
-  
-})
+socketProducts(io);

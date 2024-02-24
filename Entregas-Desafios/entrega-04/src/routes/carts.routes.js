@@ -3,7 +3,7 @@ import  { Router } from "express";
 
 //const CartManager = require("../managers/cartManager");
 import {CartManager} from "../managers/cartManager.js";
-const manager = new CartManager("./src/carrito.json");
+const manager = new CartManager("./src/databases/carrito.json");
 
 const router = Router();
 
