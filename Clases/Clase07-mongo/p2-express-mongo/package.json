@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.1.0"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^8.1.1"
+    "express-routemap": "^1.6.0",
+    "mongoose": "^8.2.0"
   }
 }

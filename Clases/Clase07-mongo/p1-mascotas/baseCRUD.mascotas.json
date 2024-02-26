@@ -1,6 +1,6 @@
 [{
   "_id": {
-    "$oid": "65be764baf786de915a3b40a"
+    "$oid": "65da78e1aa1329663f272f1b"
   },
   "nombre": "Titito",
   "especie": "Ave",
@@ -8,9 +8,33 @@
 },
 {
   "_id": {
-    "$oid": "65be76a4af786de915a3b40b"
+    "$oid": "65da79e2aa1329663f272f1c"
+  },
+  "nombre": "Toby",
+  "especie": "Mamifero",
+  "edad": 21
+},
+{
+  "_id": {
+    "$oid": "65da7a18aa1329663f272f1d"
+  },
+  "nombre": "Dani",
+  "especie": "Mamifero",
+  "edad": 10
+},
+{
+  "_id": {
+    "$oid": "65da7a4caa1329663f272f1e"
   },
   "nombre": "Coco",
   "especie": "Reptil",
   "edad": 20
+},
+{
+  "_id": {
+    "$oid": "65da7a6caa1329663f272f1f"
+  },
+  "nombre": "Willy",
+  "especie": "Reptil",
+  "edad": 15
 }]
