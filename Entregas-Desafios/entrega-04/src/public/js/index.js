@@ -2,8 +2,8 @@
 const socket = io();
 
 //Real time products list
-socket.on("real-products", (obj) => {
-    updateProductsList(obj);
+socket.on("real-products", (productsData) => {
+    updateProductsList(productsData.products);
 })
 
 function updateProductsList(productList) {
@@ -11,7 +11,7 @@ function updateProductsList(productList) {
 
     let productsHTML = "";
 
-    productList.forEach((product) => {
+    productList.forEach(product => {
         productsHTML += `
         <div class="container">
         <div class="producto">
