@@ -1,4 +1,5 @@
 import productsModel from "../models/products.model.js";
+import productsData from "../../data/products.init-data.js";
 
 class ProductManager{
     constructor(path) {
@@ -39,6 +40,16 @@ class ProductManager{
         return listString.every(isString) && listNumber.every(isNumber) && listBool.every(isBool) && isStringsArray(product.thumbnails);
     }
 
+    async insertProducts(){
+        try {
+            let result = await productsModel.insertMany(productsData);
+            return result;
+        } catch (error) {
+            throw new Error(`No se pueden insertar los productos\n ${error.message}`);
+        }
+    }
+
+
     async addProduct(product){
         try {
             const allProducts = await this.getProducts();
@@ -64,7 +75,7 @@ class ProductManager{
             
             //Agrego el producto
             allProducts.products.push(product);
-            await fs.writeFile(this.path, JSON.stringify(allProducts));
+            //await fs.writeFile(this.path, JSON.stringify(allProducts));
             return {message: "Producto agregado!"};
             
         } catch (error) {
@@ -119,7 +130,7 @@ class ProductManager{
                 
                 allProducts.products[productIndex] = product;
     
-                await fs.writeFile(this.path, JSON.stringify(allProducts));
+                //await fs.writeFile(this.path, JSON.stringify(allProducts));
                 return {message: `Se actualizó el producto con id ${id}`};
             }	
             
@@ -128,7 +139,7 @@ class ProductManager{
         }
 	}
 
-
+    
     async deleteProduct(id) {
         try {
             const allProducts = await this.getProducts(); 
@@ -138,7 +149,7 @@ class ProductManager{
                 return {error: "Not found"};
             } else{            
                 allProducts.products.splice(productIndex,1);
-                await fs.writeFile(this.path, JSON.stringify(allProducts));
+                //await fs.writeFile(this.path, JSON.stringify(allProducts));
                 return {message: `Se eliminó el producto con id ${id}`};   
             }
             

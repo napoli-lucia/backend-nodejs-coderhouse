@@ -1,9 +1,25 @@
 import  { Router } from "express";
 
-import {ProductManager} from "../dao/filesystem/productManager.js";
-const manager = new ProductManager("./src/data/productos.json");
+//import {ProductManager} from "../dao/filesystem/productManager.js";
+//const manager = new ProductManager("./src/data/productos.json");
+
+import {ProductManager} from "../dao/db/products.manager.js";
+const manager = new ProductManager();
 
 const router = Router();
+
+// GET /api/products/insertion
+router.get(`/insertion`, async (req, res) => {
+    try {
+      let result = await manager.insertProducts();
+      return res.json({
+        message: "all the products were inserted succesfully",
+        products: result,
+      });
+    } catch (error) {
+        next(error);
+    }
+});
 
 // GET /api/products/
 router.get(`/`, async (req, res, next) => {
@@ -125,5 +141,12 @@ function idErrors(req, res, next) {
     }
     next();
 };
+
+function serverErrors(error, req, res, next) {
+    console.log(error);
+    res.status(500).send('An internal server error occurred');
+};
+
+router.use(serverErrors);
 
 export default router;
