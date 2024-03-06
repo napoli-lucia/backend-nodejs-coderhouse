@@ -104,26 +104,12 @@ class ProductManager{
 
     async updateProduct(id, newData) {
         try {
-            const allProducts = await this.getProducts();
-            const productIndex = allProducts.products.findIndex((product) => product.id === id);
-    
-            if(productIndex === -1){
-                return {error: `No se puede actualizar el producto con id ${id} porque no existe`};
-            
-            } else{
-                const product = allProducts.products[productIndex];
-                
-                Object.keys(newData).forEach((element) => {
-                    if(Object.keys(product).includes(element)){
-                        product[element] = newData[element];
-                    }
-                });
-                
-                allProducts.products[productIndex] = product;
-    
-                //await fs.writeFile(this.path, JSON.stringify(allProducts));
-                return {message: `Se actualizó el producto con id ${id}`};
-            }	
+            const result = await productsModel.updateOne({"id": id}, {$set: newData});
+            console.log("ProductManager ~ updateProduct ~ result:", result);
+
+            return result.matchedCount === 0 
+            ? {error: `No se puede actualizar el producto con id ${id} porque no existe`}
+            : {message: `Se actualizó el producto con id ${id}`};
             
         } catch (error) {
             throw new Error(`No se puede actualizar el producto con id ${id}\n ${error.message}`);
@@ -133,16 +119,10 @@ class ProductManager{
     
     async deleteProduct(id) {
         try {
-            const allProducts = await this.getProducts(); 
-            const productIndex = allProducts.products.findIndex((product) => product.id === id);
-            
-            if(productIndex === -1){
-                return {error: "Not found"};
-            } else{            
-                allProducts.products.splice(productIndex,1);
-                //await fs.writeFile(this.path, JSON.stringify(allProducts));
-                return {message: `Se eliminó el producto con id ${id}`};   
-            }
+            const result = await productsModel.deleteOne({"id": id});
+            console.log("ProductManager ~ deleteProduct ~ result:", result)
+
+            return result.deletedCount === 0 ? {error: "Not found"} : {message: `Se eliminó el producto con id ${id}`};
             
         } catch (error) {
             throw new Error(`No se puede eliminar el producto con id ${id}\n ${error.message}`);
