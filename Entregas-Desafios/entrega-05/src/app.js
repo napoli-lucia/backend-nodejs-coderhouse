@@ -64,11 +64,11 @@ app.use(`/${API_PREFIX}/carts`, cartsRoutes)
 // VIEWS ROUTES
 app.use("/", viewsRoutes);
 
-// function serverErrors(error, req, res, next) {
-//     console.log(error);
-//     res.status(500).send('An internal server error occurred');
-// };
+function serverErrors(error, req, res, next) {
+    console.log(error);
+    res.status(500).send('An internal server error occurred');
+};
 
-// app.use(serverErrors);
+app.use(serverErrors);
 
 socketProducts(io);

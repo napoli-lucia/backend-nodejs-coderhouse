@@ -52,13 +52,8 @@ class ProductManager{
 
     async addProduct(product){
         try {
-            const allProducts = await this.getProducts();
-    
             //Chequeo que el codigo no se repita
-            const codigos = allProducts.products.map((product) => product.code);
-            if(codigos.includes(product.code)){
-                return {error: "Producto invalido. El codigo ya existe"};
-            }
+            // TO DO
     
             //Chequeo que esten todos los campos obligatorios
             if(!this.#obligatoryProperties(Object.keys(product))){
@@ -71,11 +66,11 @@ class ProductManager{
             }
             
             //Id autoincrementable
-            product.id = allProducts.products.length === 0 ? 1 : allProducts.products.length + 1;
+            const allProducts = await this.getProducts();
+            product.id = allProducts.length === 0 ? 1 : allProducts.length + 1;
             
             //Agrego el producto
-            allProducts.products.push(product);
-            //await fs.writeFile(this.path, JSON.stringify(allProducts));
+            await productsModel.create(product);
             return {message: "Producto agregado!"};
             
         } catch (error) {
@@ -84,9 +79,9 @@ class ProductManager{
     }
 
 
-    async getProducts(){
+    async getProducts(limitNumber){
         try {
-            const allProducts = await productsModel.find({});
+            const allProducts = await productsModel.find({}).limit(limitNumber);
             return allProducts;
         } catch (error) {
             throw new Error(`No se pueden obtener los productos\n ${error.message}`);
@@ -96,14 +91,10 @@ class ProductManager{
 
     async getProductById(id){
         try {
-            const allProducts = await this.getProducts();
-            const productIndex = allProducts.products.findIndex((product) => product.id === id);
+            const product = await productsModel.find({"id": id});
 
-            if(productIndex === -1){
-                return {error: "Not found"};
-            } else{
-                return allProducts.products[productIndex];
-            }
+            return product.length === 0 ? {error: "Not found"} : product;
+
 
         } catch (error) {
             throw new Error(`No se puede obtener el producto con id ${id}\n ${error.message}`);

@@ -23,11 +23,8 @@ router.get(`/insertion`, async (req, res) => {
 
 // GET /api/products/
 router.get(`/`, async (req, res, next) => {
-    try {
-        const products = await manager.getProducts();
-    
-        if (req.query.limit) {
-            console.log(`Get ${req.query.limit} products`);
+    try {        
+        if (req.query.limit) {    
             if (isNaN(req.query.limit) || Number(req.query.limit) < 0) {
                 console.log("GET: Limit error");
                 return res.status(400).json({
@@ -35,12 +32,12 @@ router.get(`/`, async (req, res, next) => {
                     message: `this limit is not valid`,
                 });
             }
-    
-            return res.send({ products: Object.values(products)[0].slice(0, Number(req.query.limit)) });
+            console.log(`Get ${req.query.limit} products`);
+            return res.send({ products: await manager.getProducts(Number(req.query.limit))});
         };
-    
+        
         console.log("Get all products");
-        return res.send(products);
+        return res.send({ products: await manager.getProducts()});
 
     } catch (error) {
         next(error);
@@ -142,11 +139,11 @@ function idErrors(req, res, next) {
     next();
 };
 
-function serverErrors(error, req, res, next) {
-    console.log(error);
-    res.status(500).send('An internal server error occurred');
-};
+// function serverErrors(error, req, res, next) {
+//     console.log(error);
+//     res.status(500).send('An internal server error occurred');
+// };
 
-router.use(serverErrors);
+// router.use(serverErrors);
 
 export default router;
