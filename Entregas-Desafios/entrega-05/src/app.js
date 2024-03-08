@@ -22,7 +22,10 @@ const DB_PORT = 27017;
 const DB_NAME = "ecommerce";
 
 const connection = mongoose
-    .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
+    //.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
+    .connect('mongodb+srv://<user>:<password>@codercluster.2ms9a6h.mongodb.net/', {
+     dbName: `${DB_NAME}`,
+    })
     .then((conn) => {
       console.log("CONNECTED TO MONGO, WELCOME!!!");
     })
@@ -71,6 +74,7 @@ function serverErrors(error, req, res, next) {
 };
 
 app.use(serverErrors);
+
 
 socketProducts(io);
 socketChat(io);
