@@ -28,6 +28,13 @@ h2 {
     padding: 20px;
 }
 
+.containerMessages {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(219, 243, 251);
+}
+
 .producto {
     display: flex;
     border: 1px solid #ccc;

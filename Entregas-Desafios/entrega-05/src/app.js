@@ -7,6 +7,7 @@ import productsRoutes from "./routes/products.routes.js"
 import cartsRoutes from "./routes/carts.routes.js"
 import viewsRoutes from "./routes/views.routes.js"
 import socketProducts from "./listeners/socketProducts.js";
+import socketChat from "./listeners/socketChat.js";
 
 import mongoose from "mongoose";
 import displayRoutes from "express-routemap";
@@ -72,3 +73,4 @@ function serverErrors(error, req, res, next) {
 app.use(serverErrors);
 
 socketProducts(io);
+socketChat(io);

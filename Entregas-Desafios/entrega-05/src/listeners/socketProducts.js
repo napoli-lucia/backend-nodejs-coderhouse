@@ -1,5 +1,7 @@
-import {ProductManager} from "../dao/filesystem/productManager.js";
-const manager = new ProductManager("./src/data/productos.json");
+//import {ProductManager} from "../dao/filesystem/productManager.js";
+//const manager = new ProductManager("./src/data/productos.json");
+import {ProductManager} from "../dao/db/products.manager.js";
+const manager = new ProductManager();
 
 
 const socketProducts = (socketServer) => {

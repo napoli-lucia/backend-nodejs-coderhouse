@@ -1,9 +1,9 @@
 //Escucha del cliente
 const socket = io();
 
-//Real time products list
+//**Real time products list**//
 socket.on("real-products", (productsData) => {
-    updateProductsList(productsData.products);
+    updateProductsList(productsData);
 })
 
 function updateProductsList(productList) {
@@ -15,7 +15,7 @@ function updateProductsList(productList) {
         productsHTML += `
         <div class="container">
         <div class="producto">
-            <img src=${product.thumbnails} alt="Producto ${product.title}" onerror="product.onerror=null; product.src='./images/no-image.jpg'; product.alt='image no available';">
+        <img src=${product.thumbnails} alt="Producto ${product.title}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
             <div class="info">
             <ul>
                 <li>ID: ${product.id}</li>

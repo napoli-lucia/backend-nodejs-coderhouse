@@ -81,8 +81,7 @@ class ProductManager{
 
     async getProducts(limitNumber){
         try {
-            const allProducts = await productsModel.find({}).limit(limitNumber);
-            return allProducts;
+            return await productsModel.find({}).limit(limitNumber).lean();
         } catch (error) {
             throw new Error(`No se pueden obtener los productos\n ${error.message}`);
         }
