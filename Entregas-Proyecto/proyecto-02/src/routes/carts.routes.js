@@ -1,7 +1,9 @@
 import  { Router } from "express";
 
-import {CartManager} from "../dao/filesystem/cartManager.js";
-const manager = new CartManager("./src/data/carrito.json");
+// import {CartManager} from "../dao/filesystem/cartManager.js";
+// const manager = new CartManager("./src/data/carrito.json");
+import {CartManager} from "../dao/db/carts.manager.js";
+const manager = new CartManager();
 
 const router = Router();
 
@@ -12,7 +14,7 @@ router.post(`/`, async (req, res, next) => {
         const result = await manager.addCart();
 
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: result.message,
         });
 
@@ -30,7 +32,7 @@ router.get(`/:cid`, async (req, res, next) => {
         const result = await manager.getCartById(Number(req.params.cid));
         if (result.error) {
             return res.status(404).json({
-                status: 404,
+                status: "error",
                 message: result.error,
             });
         }

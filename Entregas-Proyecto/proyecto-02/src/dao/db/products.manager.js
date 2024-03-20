@@ -105,9 +105,7 @@ class ProductManager{
     async getProductById(id){
         try {
             const product = await productsModel.find({"id": id});
-
             return product.length === 0 ? {error: "Not found"} : product;
-
 
         } catch (error) {
             throw new Error(`No se puede obtener el producto con id ${id}\n ${error.message}`);

@@ -22,10 +22,10 @@ const DB_PORT = 27017;
 const DB_NAME = "ecommerce";
 
 const connection = mongoose
-    //.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
-    .connect('mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/', {
-     dbName: `${DB_NAME}`,
-    })
+    // .connect('mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/', {
+    //  dbName: `${DB_NAME}`,
+    // })
+    .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
     .then((conn) => {
       console.log("CONNECTED TO MONGO, WELCOME!!!");
     })
@@ -70,7 +70,11 @@ app.use("/", viewsRoutes);
 
 function serverErrors(error, req, res, next) {
     console.log(error);
-    res.status(500).send('An internal server error occurred');
+    //res.status(500).send('An internal server error occurred');
+    return res.status(500).json({
+        status: "error",
+        message: "An internal server error occurred"
+    })
 };
 
 app.use(serverErrors);

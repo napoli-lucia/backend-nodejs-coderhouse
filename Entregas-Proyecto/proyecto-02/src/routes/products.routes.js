@@ -21,17 +21,32 @@ router.get(`/insertion`, async (req, res) => {
 });
 
 // GET /api/products/
+// /api/products/?page=2&limit=5
+// /api/products/?sort=asc
+// /api/products/?query={categoria:Lacteos}
 router.get(`/`, async (req, res, next) => {
     try {
-        // /api/products/?page=2&limit=5
-        
-        console.log("req.query:", req.query)
+        console.log("GET products - req.query:", req.query)
+
+        // if (isNaN(req.query.limit) || Number(req.query.limit) < 0) {
+        //     console.log("GET: Limit error");
+        //     return res.status(400).json({
+        //         status: "error",
+        //         message: "this limit is not valid",
+        //     });
+        // }
+
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
+        
+        const sort = req.query.sort === 'asc' ? 1 : req.query.sort === 'desc' ? -1 : null;
+        
         const query = req.query.query || null;
-        const sort = Number(req.query.sort) || null; //asc=1,dsc=-1
-
         let queryObj = {}
+        if(query){
+            let queryArr = query.split(":");
+            queryObj[queryArr[0]] = queryArr[1];
+        }
 
         const {
             docs,
@@ -42,25 +57,6 @@ router.get(`/`, async (req, res, next) => {
             hasNextPage
           } = await manager.getProducts(page, limit, queryObj, sort);
 
-          
-        
-        // if (req.query.limit) {    
-        //     if (isNaN(req.query.limit) || Number(req.query.limit) < 0) {
-        //         console.log("GET: Limit error");
-        //         return res.status(400).json({
-        //             status: 400,
-        //             message: `this limit is not valid`,
-        //         });
-        //     }
-        //     console.log(`Get ${req.query.limit} products`);
-        //     return res.send({ products: await manager.getProducts(Number(req.query.limit))});
-        // };
-        
-        // console.log("Get all products");
-        //return res.send({ products: result});
-        
-        //const prevLink = hasPrevPage ? `/api/views/products?page=${prevPage}` : null;
-        // /api/views/students?page={{prevPage}}
         const link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`
 
         return res.json({
@@ -175,6 +171,7 @@ function idErrors(req, res, next) {
     }
     next();
 };
+
 
 // function serverErrors(error, req, res, next) {
 //     console.log(error);
