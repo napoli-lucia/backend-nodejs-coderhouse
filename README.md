@@ -2,7 +2,6 @@
 
 - Comisión: 50040
 - Profesor: Rabindranath Ferreira Villamizar
-- Tutor: Martin Precelle
 - Inicio: 16/12/2023
 - Fin: 15/06/2024
 
@@ -17,3 +16,4 @@
 ## Entregas proyecto
 
 - [Primera entrega](./Entregas-Proyecto/proyecto-01/)
+- [Segunda entrega](./Entregas-Proyecto/proyecto-02/)
