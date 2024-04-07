@@ -4,6 +4,7 @@ import  { Router } from "express";
 //const manager = new ProductManager("./src/data/productos.json");
 import {ProductManager} from "../dao/db/products.manager.js";
 const manager = new ProductManager();
+import {UniqueError} from "../handle-errors/uniqueError.js"
 
 const router = Router();
 
@@ -102,6 +103,12 @@ router.post(`/`, async (req, res, next) => {
         });
 
     } catch (error) {
+        if (error instanceof UniqueError) {
+            return res.status(400).json({
+                status: 400,
+                message: error.message,
+            });
+        }
         next(error);
     }
 });
