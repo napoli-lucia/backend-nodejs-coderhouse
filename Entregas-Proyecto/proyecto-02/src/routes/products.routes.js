@@ -4,6 +4,7 @@ import  { Router } from "express";
 //const manager = new ProductManager("./src/data/productos.json");
 import {ProductManager} from "../dao/db/products.manager.js";
 const manager = new ProductManager();
+import {UniqueError} from "../handle-errors/uniqueError.js"
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.get(`/insertion`, async (req, res) => {
     try {
       let result = await manager.insertProducts();
       return res.json({
+        status: "success",
         message: "all the products were inserted succesfully",
         products: result,
       });
@@ -28,6 +30,7 @@ router.get(`/`, async (req, res, next) => {
     try {
         console.log("GET products - req.query:", req.query)
 
+        //TODO Chequeo de queries validas
         // if (isNaN(req.query.limit) || Number(req.query.limit) < 0) {
         //     console.log("GET: Limit error");
         //     return res.status(400).json({
@@ -136,6 +139,12 @@ router.post(`/`, async (req, res, next) => {
         });
 
     } catch (error) {
+        if (error instanceof UniqueError) {
+            return res.status(400).json({
+                status: 400,
+                message: error.message,
+            });
+        }
         next(error);
     }
 });

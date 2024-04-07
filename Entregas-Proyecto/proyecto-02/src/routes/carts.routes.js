@@ -14,7 +14,7 @@ router.post(`/`, async (req, res, next) => {
         const result = await manager.addCart();
 
         return res.status(200).json({
-            status: "success",
+            status: 200,
             message: result.message,
         });
 
@@ -32,7 +32,7 @@ router.get(`/:cid`, async (req, res, next) => {
         const result = await manager.getCartById(Number(req.params.cid));
         if (result.error) {
             return res.status(404).json({
-                status: "error",
+                status: 404,
                 message: result.error,
             });
         }

@@ -1,5 +1,6 @@
 import productsModel from "../models/products.model.js";
 import productsData from "../../data/products.init-data.js";
+import {UniqueError} from "../../handle-errors/uniqueError.js"
 
 class ProductManager{
     constructor(path) {
@@ -51,10 +52,7 @@ class ProductManager{
 
 
     async addProduct(product){
-        try {
-            //Chequeo que el codigo no se repita
-            // TO DO
-    
+        try {    
             //Chequeo que esten todos los campos obligatorios
             if(!this.#obligatoryProperties(Object.keys(product))){
                 return {error: "Producto no agregado. Faltan datos!"};
@@ -67,13 +65,19 @@ class ProductManager{
             
             //Id autoincrementable
             const allProducts = await this.getProducts();
-            product.id = allProducts.length === 0 ? 1 : allProducts.length + 1;
+            product.id = allProducts.length === 0 
+            ? 1 
+            : allProducts[allProducts.length - 1].id + 1;
             
             //Agrego el producto
             await productsModel.create(product);
             return {message: "Producto agregado!"};
             
         } catch (error) {
+            //Chequeo si el error es por codigo repetido
+            if (error.name === 'MongoServerError' && error.code === 11000) {
+                throw new UniqueError('Producto invalido. El codigo ya existe')
+              }
             throw new Error(`No se puede agregar el producto\n ${error.message}`);
         }
     }
@@ -93,8 +97,6 @@ class ProductManager{
                 limit: limit, 
                 sort: {price: sort}
             })
-
-
 
         } catch (error) {
             throw new Error(`No se pueden obtener los productos\n ${error.message}`);

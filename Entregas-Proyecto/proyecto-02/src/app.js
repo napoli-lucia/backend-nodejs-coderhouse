@@ -20,12 +20,13 @@ const API_PREFIX = "api";
 const DB_HOST = "localhost";
 const DB_PORT = 27017;
 const DB_NAME = "ecommerce";
+const MONGO_URI = 'mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/';
 
 const connection = mongoose
-    // .connect('mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/', {
-    //  dbName: `${DB_NAME}`,
-    // })
-    .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
+    //.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
+    .connect(MONGO_URI, {
+     dbName: `${DB_NAME}`,
+    })
     .then((conn) => {
       console.log("CONNECTED TO MONGO, WELCOME!!!");
     })
@@ -70,7 +71,6 @@ app.use("/", viewsRoutes);
 
 function serverErrors(error, req, res, next) {
     console.log(error);
-    //res.status(500).send('An internal server error occurred');
     return res.status(500).json({
         status: "error",
         message: "An internal server error occurred"
