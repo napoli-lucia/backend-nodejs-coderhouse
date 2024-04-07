@@ -20,7 +20,7 @@ const API_PREFIX = "api";
 const DB_HOST = "localhost";
 const DB_PORT = 27017;
 const DB_NAME = "ecommerce";
-const MONGO_URI = 'mongodb+srv://lnapoli:zoiMGy65V9IrEAIm@codercluster.2ms9a6h.mongodb.net/';
+const MONGO_URI = 'mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/';
 
 const connection = mongoose
     //.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
