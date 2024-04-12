@@ -29,8 +29,15 @@ const cartSchema = new mongoose.Schema({
   });
 
 // cartSchema.pre('find', function () {
-//     this.populate('products.id')
+//     console.log("EJECUTO EL PRE MDW DE MONGOOSE");
+//     this.populate('products.product');
 // })
+
+cartSchema.virtual('cartList', {
+  ref: 'products', // The model to use
+  localField: 'product', // The field in cartsSchema
+  foreignField: 'id', // The field on productsSchema. This can be whatever you want.
+});
   
 const cartsModel = mongoose.model(collectionName, cartSchema);
 export default cartsModel;
