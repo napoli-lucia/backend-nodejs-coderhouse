@@ -1,0 +1,45 @@
+<title>Products</title>
+
+<h1>Productos</h1>
+
+<form action="/api/products" method="GET">
+        <label for="limit">Limit:</label>
+        <input type="number" name="limit" id="limit" value="{{limit}}">
+
+        <label for="page">Page:</label>
+        <input type="number" name="page" id="page" value="{{page}}">
+
+        <label for="sort">Sort:</label>
+        <select name="sort" id="sort">
+            <option value="asc">Ascendente</option>
+            <option value="desc">Descendente</option>
+        </select>
+
+        <label for="query">Query:</label>
+        <input type="text" name="query" id="query" value="{{query}}">
+
+        <button type="submit">Buscar</button>
+</form>
+
+{{#each products}}
+<div class="container">
+  <div class="producto">
+      <img src={{this.thumbnails}} alt="Producto {{this.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
+    <div class="info">
+      <ul>
+        <li>ID: {{this.id}}</li>
+        <li>Titulo: {{this.title}}</li>
+        <li>Descripcion: {{this.description}}</li>
+        <li>Codigo: {{this.code}}</li>
+        <li>Stock: {{this.stock}}</li>
+        <li>Categoria: {{this.category}}</li>
+        <li>Precio: ${{this.price}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{{/each}}
+
+<a href="{{prevLink}}">Prev</a>
+<span>{{page}}</span>
+<a href="{{nextLink}}">Next</a>

@@ -82,6 +82,13 @@ class ProductManager{
         }
     }
 
+    async getAllProducts(){
+        try {
+            return await productsModel.find({}).lean();
+        } catch (error) {
+            throw new Error(`No se pueden obtener los productos\n ${error.message}`);
+        }
+    }
 
     async getProducts(page, limit, query, sort){
         try {

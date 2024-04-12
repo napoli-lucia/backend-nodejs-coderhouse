@@ -1,5 +1,7 @@
 import express from "express";
+import _handlebars from "handlebars"
 import handlebars from "express-handlebars";
+import {allowInsecurePrototypeAccess} from "@handlebars/allow-prototype-access";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
 
@@ -45,7 +47,10 @@ app.use(express.json());
 
 
 // config handlebars
-app.engine("handlebars", handlebars.engine());
+//app.engine("handlebars", handlebars.engine());
+app.engine('handlebars', handlebars.engine({
+    handlebars: allowInsecurePrototypeAccess(_handlebars)
+}))
 app.set('views', __dirname + '/views');
 app.set("view engine", "handlebars");
 
