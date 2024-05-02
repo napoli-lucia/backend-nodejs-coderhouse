@@ -3,16 +3,18 @@ import  { Router } from "express";
 // import {ProductManager} from "../dao/filesystem/productManager.js";
 // const manager = new ProductManager("./src/data/productos.json");
 import {ProductManager} from "../dao/db/products.manager.js";
-const manager = new ProductManager();
+const productManager = new ProductManager();
+import {CartManager} from "../dao/db/carts.manager.js";
+const cartManager = new CartManager();
 
 const router = Router();
 
 router.get("/", (req, res) => {
-    manager.getAllProducts().then( result => {
+    productManager.getAllProducts().then( result => {
         res.render("home", {products: result})
-        console.log("🚀 ~ manager.getProducts ~ result:", typeof(result))
+        //console.log("🚀 ~ productManager.getProducts ~ result:", typeof(result))
     }).catch( err => {
-        console.log("manager.getProducts ~ err:", err);
+        console.log("productManager.getProducts ~ err:", err);
         res.status(400).json({
             status: 400,
             message: err.message,
@@ -21,10 +23,10 @@ router.get("/", (req, res) => {
 })
 
 router.get("/realTimeProducts", (req, res) => {
-    manager.getAllProducts().then( result => {
+    productManager.getAllProducts().then( result => {
         res.render("realTimeProducts", {products: result})
     }).catch( err => {
-        console.log("manager.getProducts ~ err:", err);
+        console.log("productManager.getProducts ~ err:", err);
         res.status(400).json({
             status: 400,
             message: err.message,
@@ -40,15 +42,33 @@ router.get("/chat", (req, res) => {
 router.get("/products", (req, res) => {
     const { page = 1, limit = 10, sort = null, query = null } = req.query;
 
-    manager.getProducts(page, limit, sort, query).then( result => {
-        //console.log("🚀 ~ manager.getProducts ~ result:", result)
+    productManager.getProducts(page, limit, sort, query).then( result => {
+        //console.log("🚀 ~ productManager.getProducts ~ result:", result)
         
         const myProducts = result.docs;
-        console.log("🚀 ~ manager.getProducts ~ myProducts:", typeof(myProducts))
+        console.log("🚀 ~ productManager.getProducts ~ myProducts:", typeof(myProducts))
         
         res.render("products", {products: myProducts})
     }).catch( err => {
-        console.log("manager.getProducts ~ err:", err);
+        console.log("productManager.getProducts ~ err:", err);
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        })
+    })
+})
+
+
+//Vista de un carrito
+router.get("/carts/:cid", (req, res) => {
+    const cid = req.params.cid;
+
+    cartManager.getCartById(cid).then( result => {
+        res.render("cart", {products: result[0].products})
+        //console.log("🚀 ~ cartManager.getProducts ~ result:", result[0]);
+        console.log("🚀 ~ cartManager.getCartById ~ result.products:", result[0].products)
+    }).catch( err => {
+        console.log("cartManager.getProducts ~ err:", err);
         res.status(400).json({
             status: 400,
             message: err.message,

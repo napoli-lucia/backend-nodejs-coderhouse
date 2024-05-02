@@ -70,7 +70,7 @@ router.post(`/:cid/product/:pid`, idErrors, async (req, res, next) => {
 // Eliminar el producto seleccionado de un carrito determinado
 router.delete(`/:cid/product/:pid`, idErrors, async (req, res, next) => {
     try {
-        const result = await manager.deleteProductToCart(req.params.cid, req.params.pid);
+        const result = await manager.deleteProductInCart(req.params.cid, req.params.pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
