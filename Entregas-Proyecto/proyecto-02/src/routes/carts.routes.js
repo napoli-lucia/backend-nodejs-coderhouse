@@ -1,4 +1,5 @@
 import  { Router } from "express";
+import mongoose from "mongoose";
 
 // import {CartManager} from "../dao/filesystem/cartManager.js";
 // const manager = new CartManager("./src/data/carrito.json");
@@ -12,7 +13,12 @@ const router = Router();
 router.post(`/`, async (req, res, next) => {
     try {
         const result = await manager.addCart();
-
+        if (result.error) {
+            return res.status(400).json({
+                status: 400,
+                message: result.error,
+            });
+        }
         return res.status(200).json({
             status: 200,
             message: result.message,
@@ -25,11 +31,10 @@ router.post(`/`, async (req, res, next) => {
 
 // GET /api/carts/:cid
 // Listar los productos que pertenezcan al carrito con el parámetro cid
-router.get(`/:cid`, async (req, res, next) => {
+router.get(`/:cid`, idErrors, async (req, res, next) => {
     try {
-        console.log(`Get cart with id ${req.params.cid} `);
-
-        const result = await manager.getCartById(Number(req.params.cid));
+        console.log(`Get cart with id ${req.params.cid}`);
+        const result = await manager.getCartById(req.params.cid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -45,12 +50,9 @@ router.get(`/:cid`, async (req, res, next) => {
 
 // POST /api/carts/:cid/product/:pid
 // Agregar el producto al carrito seleccionado
-router.post(`/:cid/product/:pid`, async (req, res, next) => {
+router.post(`/:cid/product/:pid`, idErrors, async (req, res, next) => {
     try {
-        const cid = Number(req.params.cid);
-        const pid = Number(req.params.pid);
-
-        const result = await manager.addProductToCart(cid, pid);
+        const result = await manager.addProductToCart(req.params.cid, req.params.pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -66,12 +68,9 @@ router.post(`/:cid/product/:pid`, async (req, res, next) => {
 
 // DELETE /api/carts/:cid/product/:pid
 // Eliminar el producto seleccionado de un carrito determinado
-router.delete(`/:cid/product/:pid`, async (req, res, next) => {
+router.delete(`/:cid/product/:pid`, idErrors, async (req, res, next) => {
     try {
-        const cid = Number(req.params.cid);
-        const pid = Number(req.params.pid);
-
-        const result = await manager.deleteProductToCart(cid, pid);
+        const result = await manager.deleteProductToCart(req.params.cid, req.params.pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -90,9 +89,9 @@ router.delete(`/:cid/product/:pid`, async (req, res, next) => {
 
 // DELETE /api/carts/:cid
 // Eliminar todos los productos del carrito seleccionado
-router.delete(`/:cid`, async (req, res, next) => {
+router.delete(`/:cid`, idErrors, async (req, res, next) => {
     try {
-        const result = await manager.deleteAllInCart(Number(req.params.cid));
+        const result = await manager.deleteAllInCart(req.params.cid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -111,12 +110,9 @@ router.delete(`/:cid`, async (req, res, next) => {
 
 // PUT /api/carts/:cid/product/:pid
 // Actualizar solo la cantidad dada de ejemplares del producto
-router.put(`/:cid/product/:pid`, async (req, res, next) => {
+router.put(`/:cid/product/:pid`, idErrors, async (req, res, next) => {
     try {
-        const cid = Number(req.params.cid);
-        const pid = Number(req.params.pid);
-
-        const result = await manager.updateProductQuantityInCart(cid, pid, req.body.quantity);
+        const result = await manager.updateProductQuantityInCart(req.params.cid, req.params.pid, req.body.quantity);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -136,10 +132,10 @@ router.put(`/:cid/product/:pid`, async (req, res, next) => {
 
 // PUT /api/carts/:cid
 // Actualizar carrito con arreglo de productos
-router.put(`/:cid`, async (req, res, next) => {
+router.put(`/:cid`, idErrors, async (req, res, next) => {
     try {
         console.log("🚀 ~ router.put ~ req.body:", req.body)
-        const result = await manager.updateCart(Number(req.params.cid), req.body);
+        const result = await manager.updateCart(req.params.cid, req.body);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -155,5 +151,24 @@ router.put(`/:cid`, async (req, res, next) => {
         next(error);
     }
 });
+
+//Funcion para chequear errores en id's
+function idErrors(req, res, next) {
+    if (req.params.pid && !mongoose.Types.ObjectId.isValid(req.params.pid)) {
+        console.log("Product id error");
+        return res.status(400).json({
+            status: 400,
+            message: `Product id is not valid`,
+        });
+    }
+    if (req.params.cid && !mongoose.Types.ObjectId.isValid(req.params.cid)) {
+        console.log("Cart id error");
+        return res.status(400).json({
+            status: 400,
+            message: `Cart id is not valid`,
+        });
+    }
+    next();
+};
 
 export default router;

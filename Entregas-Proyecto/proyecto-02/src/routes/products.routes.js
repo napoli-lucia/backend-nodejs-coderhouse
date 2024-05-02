@@ -1,4 +1,5 @@
 import  { Router } from "express";
+import mongoose from "mongoose";
 
 //import {ProductManager} from "../dao/filesystem/productManager.js";
 //const manager = new ProductManager("./src/data/productos.json");
@@ -85,7 +86,7 @@ router.get(`/:pid`, idErrors, async (req, res, next) => {
     try {
         console.log(`Get product with id ${req.params.pid} `);
 
-        const result = await manager.getProductById(Number(req.params.pid));
+        const result = await manager.getProductById(req.params.pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -102,9 +103,9 @@ router.get(`/:pid`, idErrors, async (req, res, next) => {
 // DELETE /api/products/:pid
 router.delete(`/:pid`, idErrors, async (req, res, next) => {
     try {
-        console.log("Get param", req.params);
+        console.log(`Delete product with id ${req.params.pid} `);
 
-        const result = await manager.deleteProduct(Number(req.params.pid));
+        const result = await manager.deleteProduct(req.params.pid);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -152,7 +153,9 @@ router.post(`/`, async (req, res, next) => {
 // PUT /api/products/:pid
 router.put(`/:pid`, idErrors, async (req, res, next) => {
     try {
-        const result = await manager.updateProduct(Number(req.params.pid), req.body);
+        console.log(`Edit product with id ${req.params.pid} `);
+
+        const result = await manager.updateProduct(req.params.pid, req.body);
         if (result.error) {
             return res.status(404).json({
                 status: 404,
@@ -171,7 +174,7 @@ router.put(`/:pid`, idErrors, async (req, res, next) => {
 
 //Funcion para chequear errores en id
 function idErrors(req, res, next) {
-    if (isNaN(req.params.pid) || Number(req.params.pid) < 0) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.pid)) {
         console.log("Id error");
         return res.status(400).json({
             status: 400,
@@ -180,13 +183,5 @@ function idErrors(req, res, next) {
     }
     next();
 };
-
-
-// function serverErrors(error, req, res, next) {
-//     console.log(error);
-//     res.status(500).send('An internal server error occurred');
-// };
-
-// router.use(serverErrors);
 
 export default router;

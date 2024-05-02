@@ -3,17 +3,11 @@ import mongoose from "mongoose";
 const collectionName = "carts";
 
 const cartSchema = new mongoose.Schema({
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
     products: {
       type:[
         {
           product:{
-            //type: mongoose.Schema.Types.ObjectId,
-            type: Number,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "products",
             required: true
           },
@@ -24,20 +18,13 @@ const cartSchema = new mongoose.Schema({
           }
         }
       ],
-      default: []
     }
   });
 
-// cartSchema.pre('find', function () {
-//     console.log("EJECUTO EL PRE MDW DE MONGOOSE");
-//     this.populate('products.product');
-// })
+cartSchema.pre('find', function () {
+    console.log("EJECUTO EL PRE MDW DE MONGOOSE");
+    this.populate('products.product');
+})
 
-cartSchema.virtual('cartList', {
-  ref: 'products', // The model to use
-  localField: 'product', // The field in cartsSchema
-  foreignField: 'id', // The field on productsSchema. This can be whatever you want.
-});
-  
 const cartsModel = mongoose.model(collectionName, cartSchema);
 export default cartsModel;

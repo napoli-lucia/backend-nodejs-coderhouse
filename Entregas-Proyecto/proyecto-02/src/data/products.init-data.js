@@ -9,8 +9,7 @@ const products = [
         "code": "ABC001",
         "status": true,
         "stock": 15,
-        "category": "Harinas",
-        "id": 1
+        "category": "Harinas"
     },
     {
         "title": "Leche",
@@ -22,8 +21,7 @@ const products = [
         "code": "ABC002",
         "status": true,
         "stock": 10,
-        "category": "Lacteos",
-        "id": 2
+        "category": "Lacteos"
     },
     {
         "title": "Gaseosa",
@@ -35,8 +33,7 @@ const products = [
         "code": "ABC003",
         "status": true,
         "stock": 10,
-        "category": "Bebidas",
-        "id": 3
+        "category": "Bebidas"
     },
     {
         "title": "Queso",
@@ -48,8 +45,7 @@ const products = [
         "code": "ABC004",
         "status": true,
         "stock": 12,
-        "category": "Lacteos",
-        "id": 4
+        "category": "Lacteos"
     },
     {
         "title": "Agua",
@@ -61,8 +57,7 @@ const products = [
         "code": "ABC005",
         "status": true,
         "stock": 11,
-        "category": "Bebidas",
-        "id": 5
+        "category": "Bebidas"
     },
     {
         "title": "Harina",
@@ -74,8 +69,7 @@ const products = [
         "code": "ABC006",
         "status": true,
         "stock": 24,
-        "category": "Harinas",
-        "id": 6
+        "category": "Harinas"
     },
     {
         "title": "Queso",
@@ -87,8 +81,7 @@ const products = [
         "code": "ABC007",
         "status": true,
         "stock": 25,
-        "category": "Lacteos",
-        "id": 7
+        "category": "Lacteos"
     },
     {
         "title": "Queso",
@@ -100,8 +93,7 @@ const products = [
         "code": "ABC008",
         "status": true,
         "stock": 25,
-        "category": "Lacteos",
-        "id": 8
+        "category": "Lacteos"
     },
     {
         "title": "Queso",
@@ -113,8 +105,7 @@ const products = [
         "code": "ABC009",
         "status": false,
         "stock": 25,
-        "category": "Lacteos",
-        "id": 9
+        "category": "Lacteos"
     }
 ]
 

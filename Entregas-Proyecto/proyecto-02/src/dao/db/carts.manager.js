@@ -35,19 +35,10 @@ class CartManager{
     }
 
     async addCart(){
-        try {
-            const allCarts = await this.#getCarts();
-            let cid;
-            
-           //Id autoincrementable
-           if(allCarts.length === 0){
-                cid = 1;
-           } else{
-                cid=allCarts[allCarts.length - 1].id + 1;
-           }
-            
-            //Agrego el carrito
-            await cartsModel.create({id: cid});
+        try {            
+            //Creo el carrito
+            const cart = await cartsModel.create({products: []});
+            console.log("🚀 ~ CartManager ~ addCart ~ cart:", cart)
             return {message: "Carrito agregado!"};
             
         } catch (error) {
@@ -55,14 +46,15 @@ class CartManager{
         }
     }
 
-    async getCartById(id){
+    async getCartById(cid){
         try {          
-            const cart = await cartsModel.find({"id": id}).populate('cartList');
+            const cart = await cartsModel.find({"_id": cid})
+            //.populate('cartList');
             //.populate("products.product");
             return cart.length === 0 ? {error: "Not found"} : cart;
 
         } catch (error) {
-            throw new Error(`No se puede obtener el carrito con id ${id}\n ${error.message}`);
+            throw new Error(`No se puede obtener el carrito con id ${caseid}\n ${error.message}`);
         }
     }
 
@@ -70,21 +62,31 @@ class CartManager{
     async addProductToCart(cid,pid){
         try {
             const cart = await this.#checkCartAndProduct(cid,pid);
+            if(cart.error) return cart;
             
-            //Chequeo si el producto ya esta o no en el carrito 
-            const products = cart[0].products;
-            const productIndex = products.findIndex((item) => item.product === pid);
+            //Chequeo si el producto ya esta o no en el carrito
+            const productExist = await cartsModel.find({
+                "_id": cid,"products":{$elemMatch:{"product": pid}}})
+            console.log("🚀 ~ CartManager ~ addProductToCart ~ productExist:", productExist)
 
-            if(productIndex === -1){
-                products.push({"product": pid, "quantity": 1});
+            // const products = cart[0].products;
+            // const productIndex = products.findIndex((item) => item.product === pid);
+
+            let result;
+            if(productExist.length === 0){
+                //products.push({"product": pid, "quantity": 1});
+                
+                //Agrego cambios en el carrito
+                result = await cartsModel.findOneAndUpdate({"_id": cid}, {$push: 
+                    {products: {product: pid, quantity: 1}}});
+                console.log("🚀 ~ CartManager ~ addProductToCart ~ result:", result)
             } else{
-                products[productIndex].quantity +=1;
+                //products[productIndex].quantity +=1;
+                result = await cartsModel.updateOne({"_id": cid, "products.product": pid}, {$inc: {"products.$.quantity":1}});
             }
             //console.log("Cart updated:", cart);
 
-            //Agrego cambios en el carrito
-            const result = await cartsModel.updateOne({"id": cid}, {$set: cart[0]});
-            //console.log("Result:", result)
+            console.log("Result:", result)
 
             return result.acknowledged === false || result.modifiedCount === 0
             ? {error: `No se puede agregar el producto ${pid} al carrito ${cid}`}
@@ -99,7 +101,7 @@ class CartManager{
     async deleteProductToCart(cid, pid) {
         try {
             const result = await cartsModel.updateOne(
-                {"id": cid},
+                {"_id": cid},
                 {$pull: {products: {product: pid}}},
             )
             console.log("ProductManager ~ deleteProduct ~ result:", result);
@@ -114,7 +116,7 @@ class CartManager{
     async deleteAllInCart(cid){
         try {          
             const result = await cartsModel.updateOne(
-                {"id": cid},
+                {"_id": cid},
                 {$set: {products: []}},
             )
             console.log("🚀 ~ CartManager ~ deleteAllInCart ~ result:", result)
@@ -142,7 +144,7 @@ class CartManager{
             }
             
             //Agrego cambios en el carrito
-            const result = await cartsModel.updateOne({"id": cid}, {$set: cartResult[0]});
+            const result = await cartsModel.updateOne({"_id": cid}, {$set: cartResult[0]});
             console.log("🚀 ~ CartManager ~ updateProductQuantityInCart ~ result:", result)
 
             return result.matchedCount === 0 ? {error: "Not found"} : {message: `Se actualizo la cantidad del producto ${pid}`};
@@ -155,7 +157,7 @@ class CartManager{
     async updateCart(cid, newData) {
         try {
             const result = await cartsModel.updateOne(
-                {"id": cid}, 
+                {"_id": cid}, 
                 {$set: {products: newData}});
             console.log("ProductManager ~ updateProduct ~ result:", result);
 

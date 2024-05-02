@@ -63,12 +63,6 @@ class ProductManager{
                 return {error: "Producto no agregado. Datos erroneos"};
             }
             
-            //Id autoincrementable
-            const allProducts = await this.getProducts();
-            product.id = allProducts.length === 0 
-            ? 1 
-            : allProducts[allProducts.length - 1].id + 1;
-            
             //Agrego el producto
             await productsModel.create(product);
             return {message: "Producto agregado!"};
@@ -111,41 +105,42 @@ class ProductManager{
     }
 
 
-    async getProductById(id){
+    async getProductById(pid){
         try {
-            const product = await productsModel.find({"id": id});
+            const product = await productsModel.find({"_id": pid});
+            //console.log("🚀 ~ ProductManager ~ getProductById ~ product:", product)
             return product.length === 0 ? {error: "Not found"} : product;
 
         } catch (error) {
-            throw new Error(`No se puede obtener el producto con id ${id}\n ${error.message}`);
+            throw new Error(`No se puede obtener el producto con id ${pid}\n ${error.message}`);
         }
     }
 
 
-    async updateProduct(id, newData) {
+    async updateProduct(pid, newData) {
         try {
-            const result = await productsModel.updateOne({"id": id}, {$set: newData});
+            const result = await productsModel.updateOne({"_id": pid}, {$set: newData});
             console.log("ProductManager ~ updateProduct ~ result:", result);
 
             return result.matchedCount === 0 
-            ? {error: `No se puede actualizar el producto con id ${id} porque no existe`}
-            : {message: `Se actualizó el producto con id ${id}`};
+            ? {error: `No se puede actualizar el producto con id ${pid} porque no existe`}
+            : {message: `Se actualizó el producto con id ${pid}`};
             
         } catch (error) {
-            throw new Error(`No se puede actualizar el producto con id ${id}\n ${error.message}`);
+            throw new Error(`No se puede actualizar el producto con id ${pid}\n ${error.message}`);
         }
 	}
 
     
-    async deleteProduct(id) {
+    async deleteProduct(pid) {
         try {
-            const result = await productsModel.deleteOne({"id": id});
+            const result = await productsModel.deleteOne({"_id": pid});
             console.log("ProductManager ~ deleteProduct ~ result:", result)
 
-            return result.deletedCount === 0 ? {error: "Not found"} : {message: `Se eliminó el producto con id ${id}`};
+            return result.deletedCount === 0 ? {error: "Not found"} : {message: `Se eliminó el producto con id ${pid}`};
             
         } catch (error) {
-            throw new Error(`No se puede eliminar el producto con id ${id}\n ${error.message}`);
+            throw new Error(`No se puede eliminar el producto con id ${pid}\n ${error.message}`);
         }
 	}
 }
