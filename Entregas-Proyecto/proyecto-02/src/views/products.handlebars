@@ -11,11 +11,12 @@
 
         <label for="sort">Sort:</label>
         <select name="sort" id="sort">
-            <option value="asc">Ascendente</option>
-            <option value="desc">Descendente</option>
+            <option value="Ascendente">Ascendente</option>
+            <option value="Descendente">Descendente</option>
+            <option value=null>Ninguno</option>
         </select>
 
-        <label for="query">Query:</label>
+        <label for="query">Category:</label>
         <input type="text" name="query" id="query" value="{{query}}">
 
         <button type="submit">Buscar</button>
@@ -40,6 +41,10 @@
 </div>
 {{/each}}
 
-<a href="{{prevLink}}">Prev</a>
-<span>{{page}}</span>
-<a href="{{nextLink}}">Next</a>
+{{#if hasPrevPage}}
+  <a href="{{prevLink}}">Prev</a>
+{{/if}}
+
+{{#if hasNextPage}}
+  <a href="{{nextLink}}">Next</a>
+{{/if}}

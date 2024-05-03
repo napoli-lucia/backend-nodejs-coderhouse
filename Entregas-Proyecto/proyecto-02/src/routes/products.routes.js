@@ -32,48 +32,47 @@ router.get(`/`, async (req, res, next) => {
         console.log("GET products - req.query:", req.query)
 
         //TODO Chequeo de queries validas
-        // if (isNaN(req.query.limit) || Number(req.query.limit) < 0) {
-        //     console.log("GET: Limit error");
-        //     return res.status(400).json({
-        //         status: "error",
-        //         message: "this limit is not valid",
-        //     });
-        // }
+        if (req.query.limit && isNaN(req.query.limit) || Number(req.query.limit) < 0) {
+            console.log("GET: Limit error");
+            return res.status(400).json({
+                status: "error",
+                message: "this limit is not valid",
+            });
+        }
 
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
         
-        const sort = req.query.sort === 'asc' ? 1 : req.query.sort === 'desc' ? -1 : null;
+        const sort = req.query.sort === 'Ascendente' ? 1 
+        : req.query.sort === 'Descendente' ? -1 
+        : null;
         
+
         const query = req.query.query || null;
+        console.log("🚀 ~ router.get ~ query:", query)
+
         let queryObj = {}
-        if(query){
+        if(query != undefined && query != 'null' ){
             let queryArr = query.split(":");
             queryObj[queryArr[0]] = queryArr[1];
         }
 
-        const {
-            docs,
-            totalPages,
-            prevPage,
-            nextPage,
-            hasPrevPage,
-            hasNextPage
-          } = await manager.getProducts(page, limit, queryObj, sort);
+        // const {
+        //     docs,
+        //     totalPages,
+        //     prevPage,
+        //     nextPage,
+        //     hasPrevPage,
+        //     hasNextPage
+        //   } = await manager.getProducts(page, limit, queryObj, sort);
 
-        const link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`
+        // const link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`;
 
-        return res.json({
+        const result = await manager.getProducts(page, limit, queryObj, sort);
+
+        return res.status(200).json({
             status: "success",
-            payload: docs,
-            totalPages,
-            prevPage,
-            nextPage,
-            page,
-            hasPrevPage,
-            hasNextPage,
-            prevLink: hasPrevPage ? `${link}page=${prevPage}` : null,
-            nextLink: hasNextPage ? `${link}page=${nextPage}` : null
+            ...result
         })
 
     } catch (error) {

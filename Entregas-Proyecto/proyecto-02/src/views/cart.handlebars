@@ -7,7 +7,7 @@
 {{#each products}}
 <div class="container">
   <div class="producto">
-      <img src={{this.product.thumbnails}} alt="Producto {{this.product.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
+      <img src={{this.product.thumbnails}} alt="Producto {{this.product.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image producto {{this.product.title}}';">
     <div class="info">
       <ul>
         <li>ID: {{this.product.id}}</li>

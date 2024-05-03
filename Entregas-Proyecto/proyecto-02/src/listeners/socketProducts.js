@@ -25,6 +25,7 @@ const socketProducts = (socketServer) => {
         //Eliminar producto
         socket.on("delete-prod", async (pid) => {
             console.log("Id ingresado:", pid);
+            
             const res = await manager.deleteProduct(pid);
             console.log("Respuesta:", res);
             

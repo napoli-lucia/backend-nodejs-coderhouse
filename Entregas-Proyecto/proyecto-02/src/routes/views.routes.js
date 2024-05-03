@@ -43,12 +43,15 @@ router.get("/products", (req, res) => {
     const { page = 1, limit = 10, sort = null, query = null } = req.query;
 
     productManager.getProducts(page, limit, sort, query).then( result => {
-        //console.log("🚀 ~ productManager.getProducts ~ result:", result)
+        console.log("🚀 ~ productManager.getProducts ~ result:", result)
         
-        const myProducts = result.docs;
-        console.log("🚀 ~ productManager.getProducts ~ myProducts:", typeof(myProducts))
-        
-        res.render("products", {products: myProducts})
+        res.render("products", {
+            products: result.payload,
+            prevLink: result.prevLink,
+            nextLink: result.nextLink,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage
+        })
     }).catch( err => {
         console.log("productManager.getProducts ~ err:", err);
         res.status(400).json({

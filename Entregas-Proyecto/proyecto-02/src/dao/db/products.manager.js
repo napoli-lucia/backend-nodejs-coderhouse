@@ -87,17 +87,54 @@ class ProductManager{
     async getProducts(page, limit, query, sort){
         try {
             //return await productsModel.find({}).limit(limitNumber).lean();
-            if(!sort){
-                return await productsModel.paginate(query, { 
-                    page: page, 
-                    limit: limit
-                })
+            // if(!sort){
+            //     return await productsModel.paginate(query, { 
+            //         page: page, 
+            //         limit: limit
+            //     })
+            // }
+            // return await productsModel.paginate(query, { 
+            //     page: page, 
+            //     limit: limit, 
+            //     sort: {price: sort}
+            // })
+            const options = {page: page, limit: limit};
+
+            if(sort) {
+                options.sort = {price: sort};
             }
-            return await productsModel.paginate(query, { 
-                page: page, 
-                limit: limit, 
-                sort: {price: sort}
-            })
+
+            const result = await productsModel.paginate(query, options);
+            //console.log("🚀 ~ ProductManager ~ getProducts ~ result:", result)
+
+            //console.log("🚀 ~ ProductManager ~ getProducts ~ query:", query)
+            let link;
+            if(!query || Object.keys(query).length===0) {
+                query = null;
+            }
+            if(sort===null) {
+                //sort = null;
+                link = `/api/products?limit=${limit}&query=${query}&`
+            } else{
+                link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`
+            }
+            //const link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`
+
+            //console.log("🚀 ~ ProductManager ~ getProducts ~ link:", link)
+            return {
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: result.hasPrevPage ? `${link}page=${result.prevPage}` : null,
+                nextLink: result.hasNextPage ? `${link}page=${result.nextPage}` : null
+            }
+
+
+
 
         } catch (error) {
             throw new Error(`No se pueden obtener los productos\n ${error.message}`);

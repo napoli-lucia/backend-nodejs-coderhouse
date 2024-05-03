@@ -67,7 +67,8 @@ form.addEventListener("submit", async (e) => {
 //Obtener id de producto a eliminar
 document.getElementById("send-delete").addEventListener("click", function () {
     const deleteIdInput = document.getElementById("product-id");
-    const pid = Number(deleteIdInput.value);
-    socket.emit("delete-prod", pid);
+    console.log("🚀 ~ deleteIdInput:", deleteIdInput)
+    //const pid = Number(deleteIdInput.value);
+    socket.emit("delete-prod", deleteIdInput);
     deleteIdInput.value = "";
   })
