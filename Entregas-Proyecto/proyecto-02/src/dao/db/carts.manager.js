@@ -50,7 +50,7 @@ class CartManager{
             return cart.length === 0 ? {error: "Not found"} : cart;
 
         } catch (error) {
-            throw new Error(`No se puede obtener el carrito con id ${caseid}\n ${error.message}`);
+            throw new Error(`No se puede obtener el carrito con id ${cid}\n ${error.message}`);
         }
     }
 

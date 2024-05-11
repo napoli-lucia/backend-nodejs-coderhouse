@@ -2,25 +2,24 @@
 
 <h1>Productos</h1>
 
-<form action="/api/products" method="GET">
-        <label for="limit">Limit:</label>
-        <input type="number" name="limit" id="limit" value="{{limit}}">
+<div class="containerFiltros">
+  <form id="filter-products" method="GET">
+          <label for="limit">Limit:</label>
+          <input type="number" name="limit" id="limit" value="limit" placeholder="10">
 
-        <label for="page">Page:</label>
-        <input type="number" name="page" id="page" value="{{page}}">
+          <label for="sort">Sort:</label>
+          <select name="sort" id="sort">
+              <option value="Ascendente">Ascendente</option>
+              <option value="Descendente">Descendente</option>
+              <option selected value=null>Ninguno</option>
+          </select>
 
-        <label for="sort">Sort:</label>
-        <select name="sort" id="sort">
-            <option value="Ascendente">Ascendente</option>
-            <option value="Descendente">Descendente</option>
-            <option value=null>Ninguno</option>
-        </select>
+          <label for="query">Category:</label>
+          <input type="text" name="query" id="query" placeholder="Ingrese categoría">
 
-        <label for="query">Category:</label>
-        <input type="text" name="query" id="query" value="{{query}}">
-
-        <button type="submit">Buscar</button>
-</form>
+          <button type="submit" class="searchButton">Buscar</button>
+  </form>
+</div>
 
 {{#each products}}
 <div class="container">
@@ -37,14 +36,22 @@
         <li>Precio: ${{this.price}}</li>
       </ul>
     </div>
+    <form method="post" action="http://localhost:8080/api/carts/6633130a9fd3e260f40974b7/product/{{this.id}}" id="addToCart" >
+      <button class="cartButton" type="submit">Agregar a carrito</button>
+    </form>
   </div>
 </div>
 {{/each}}
 
-{{#if hasPrevPage}}
-  <a href="{{prevLink}}">Prev</a>
-{{/if}}
+<div class="container">
+  {{#if hasPrevPage}}
+    <a class="link" href="{{prevLink}}">Prev</a>
+  {{/if}}
 
-{{#if hasNextPage}}
-  <a href="{{nextLink}}">Next</a>
-{{/if}}
+  <a class="link">Página {{page}} de {{totalPages}}</a>
+
+  {{#if hasNextPage}}
+    <a class="link" href="{{nextLink}}">Next</a>
+  {{/if}}
+</div>
+

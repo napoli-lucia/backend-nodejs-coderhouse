@@ -49,7 +49,7 @@ router.get(`/`, async (req, res, next) => {
         
 
         const query = req.query.query || null;
-        console.log("🚀 ~ router.get ~ query:", query)
+        //console.log("🚀 ~ router.get ~ query:", query)
 
         let queryObj = {}
         if(query != undefined && query != 'null' ){
@@ -57,22 +57,13 @@ router.get(`/`, async (req, res, next) => {
             queryObj[queryArr[0]] = queryArr[1];
         }
 
-        // const {
-        //     docs,
-        //     totalPages,
-        //     prevPage,
-        //     nextPage,
-        //     hasPrevPage,
-        //     hasNextPage
-        //   } = await manager.getProducts(page, limit, queryObj, sort);
-
-        // const link = `/api/products?limit=${limit}&query=${query}&sort=${sort}&`;
-
         const result = await manager.getProducts(page, limit, queryObj, sort);
 
         return res.status(200).json({
             status: "success",
-            ...result
+            ...result,
+            prevLink: result.hasPrevPage ? `/api${result.prevLink}` : null,
+            nextLink: result.hasNextPage ? `/api${result.nextLink}` : null
         })
 
     } catch (error) {

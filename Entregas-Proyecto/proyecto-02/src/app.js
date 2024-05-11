@@ -13,16 +13,16 @@ import socketChat from "./listeners/socketChat.js";
 
 import mongoose from "mongoose";
 import displayRoutes from "express-routemap";
+import 'dotenv/config'
 
 console.log("SERVER");
 const app = express();
 const PORT = 8080;
 const API_PREFIX = "api";
-
-const DB_HOST = "localhost";
-const DB_PORT = 27017;
+// const DB_HOST = "localhost";
+// const DB_PORT = 27017;
 const DB_NAME = "ecommerce";
-const MONGO_URI = 'mongodb+srv://user:password@codercluster.2ms9a6h.mongodb.net/';
+const MONGO_URI = process.env.MONGO_URI;
 
 const connection = mongoose
     //.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)

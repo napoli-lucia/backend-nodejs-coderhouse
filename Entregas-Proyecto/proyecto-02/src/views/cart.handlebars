@@ -2,12 +2,12 @@
 
 <h1>Mi carrito</h1>
 
-<h4>Mis productos</h4>
+<h2>Mis productos</h2>
 
 {{#each products}}
 <div class="container">
   <div class="producto">
-      <img src={{this.product.thumbnails}} alt="Producto {{this.product.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image producto {{this.product.title}}';">
+      <img src={{this.product.thumbnails}} alt="Producto {{this.product.title}}" >
     <div class="info">
       <ul>
         <li>ID: {{this.product.id}}</li>
@@ -17,7 +17,11 @@
         <li>Stock: {{this.product.stock}}</li>
         <li>Categoria: {{this.product.category}}</li>
         <li>Precio: ${{this.product.price}}</li>
+        {{!-- <li>{{this.product.thumbnails}}</li> --}}
       </ul>
+    </div>
+    <div>
+      <label>Cantidad: {{this.quantity}}</label>
     </div>
   </div>
 </div>
