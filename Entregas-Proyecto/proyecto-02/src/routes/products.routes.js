@@ -10,7 +10,7 @@ import {UniqueError} from "../handle-errors/uniqueError.js"
 const router = Router();
 
 // GET /api/products/insertion
-router.get(`/insertion`, async (req, res) => {
+router.get(`/insertion`, async (req, res, next) => {
     try {
       let result = await manager.insertProducts();
       return res.json({

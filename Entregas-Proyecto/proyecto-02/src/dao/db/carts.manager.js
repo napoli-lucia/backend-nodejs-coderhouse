@@ -37,7 +37,7 @@ class CartManager{
             //Creo el carrito
             const cart = await cartsModel.create({products: []});
             //console.log("🚀 ~ CartManager ~ addCart ~ cart:", cart)
-            return {message: "Carrito agregado!"};
+            return {message: `Nuevo carrito agregado con id: ${cart._id}`};
             
         } catch (error) {
             throw new Error(`No se puede agregar el carrito\n ${error.message}`);
