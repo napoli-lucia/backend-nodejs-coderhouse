@@ -2,28 +2,10 @@ const { Router } = require("express");
 
 const router = Router();
 
-// router.get("/login", async (req, res) => {
-//   const { username, password } = req.body;
-//   console.log("🚀 ~ file: session.routes.js:7 ~ router.get ~ BODY:", req.body);
-
-//   // si le preguntaramos en la BD si el usuario existe
-//   if (username !== "rabin" && password !== "123456") {
-//     return res.json({ message: `login fallido` });
-//   }
-
-//   req.session.user = username;
-//   req.session.admin = true;
-//   console.log(
-//     "🚀 ~ file: session.routes.js:15 ~ router.get ~ req.session:",
-//     req.session
-//   );
-
-//   return res.json({ message: "login success" });
-// });
-
+// LOGOUT
 router.get("/logout", async (req, res) => {
   const name = req.session.user;
-  console.log("🚀 ~ file: session.routes.js:26 ~ router.get ~ name:", name);
+  console.log("🚀 LOGOUT ~ name:", name)
 
   req.session.destroy((error) => {
     if (!error) return res.json({ message: `logout successfully` });
@@ -33,16 +15,14 @@ router.get("/logout", async (req, res) => {
   //el destroy destruye dentro del req.session
 });
 
+// WELCOME
+//http://localhost:5000/api/session/welcome?name=luis
 router.get("/welcome", async (req, res) => {
-  // localhost:5000/api/session/welcome?name=luis
   const { name } = req.query;
-  console.log("🚀 ~ file: session.routes.js:8 ~ router.get ~ name:", name);
+  console.log("🚀 ~ router.get ~ name:", name)
 
   const counter = req.session?.counter;
-  console.log(
-    "🚀 ~ file: session.routes.js:11 ~ router.get ~ counter:",
-    counter
-  );
+  console.log("🚀 ~ router.get ~ counter:", counter)
 
   //La primera visita
   if (!counter) {

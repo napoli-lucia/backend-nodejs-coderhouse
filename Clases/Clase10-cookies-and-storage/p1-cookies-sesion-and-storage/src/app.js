@@ -15,6 +15,7 @@ const COOKIE_SIGN = "klasjlhqwlx1";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(COOKIE_SIGN)); // CONFIGURACION DE COOKIE PARSER
+//con esta config existe el req.cookies
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");

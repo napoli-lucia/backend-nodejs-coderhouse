@@ -12,7 +12,7 @@ router.post(`/setCookie`, (req, res) => {
       "cookieUser", //nombre o identificador de la cookie
       { user: `${body.email}` }, //info del usuario que quiero almacenar
       //{ maxAge: 20000 } //definir opciones de la cookie, aca es cuanto tiempo vive la cookie
-      { maxAge: 20000, signed: true }
+      { maxAge: 20000, signed: true } //agregamos el signed porque la cookie esta firmada
     )
     .send();
 });
@@ -23,6 +23,8 @@ router.get(`/getCookie`, (req, res) => {
   return res.json({ cookie: req.cookies, signedCookies: req.signedCookies });
   // req.cookies cookies sin firma
   // req.signedCookies cookies con firma
+
+  //Otra forma: res.send(req.cookies);
 });
 
 // deleteCookie
@@ -30,6 +32,9 @@ router.get(`/getCookie`, (req, res) => {
 router.get(`/deleteCookie`, (req, res) => {
     //return res.clearCookie("cookieUser").end();
     return res.clearCookie("cookieUser").send("Cookie removed");
+
+    //Si la cookie ya fue borrada o caducó por expiración, el clearCookie la ignora
+    //No se usa un metodo delete porque no le pasamos ningun dato, solo borra lo que hay
 });
 
 module.exports = router;

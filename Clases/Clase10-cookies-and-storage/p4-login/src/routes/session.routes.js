@@ -3,6 +3,7 @@ const userModel = require("../model/user.model");
 
 const router = Router();
 
+// LOGOUT
 router.get("/logout", async (req, res) => {
   req.session.destroy((err) => {
     if (!err) return res.redirect("/login");
@@ -10,6 +11,8 @@ router.get("/logout", async (req, res) => {
   });
 });
 
+// LOGIN
+//http://localhost:5000/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -47,6 +50,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// REGISTER
+//http://localhost:5000/register
 router.post("/register", async (req, res) => {
   try {
     console.log("BODY REGISTER***", req.body);

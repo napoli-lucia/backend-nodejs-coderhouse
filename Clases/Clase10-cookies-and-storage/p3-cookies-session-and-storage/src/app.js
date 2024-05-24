@@ -21,12 +21,13 @@ const SECRET_SESSION = "secretSession";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(
   session({
     store: mongoStore.create({
       mongoUrl: MONGO_URL,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 5, // tiempo de vida de la session
+      ttl: 10, // tiempo de vida de la session
     }),
     secret: SECRET_SESSION,
     resave: false,
@@ -48,6 +49,7 @@ mongoose
   });
 
 app.use("/api/session/", sessionRoutes);
+
 app.use("/api/private/", authMdw, (req, res) => {
   const username = req.session.user;
   console.log("🚀 ~ file: app.js:56 ~ app.use ~ username:", username);

@@ -17,6 +17,8 @@ const SECRET_SESSION = "secretSession";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+//CONFIGURACION DEL EXPRESS SESSION
 app.use(
   session({
     secret: SECRET_SESSION,
@@ -31,9 +33,10 @@ app.set("view engine", "handlebars");
 
 // app.use("/api/views/", viewsRoutes);
 // app.use("/api/cookies/", cookiesRoutes);
-app.use("/api/session/", sessionRoutes);
+app.use("/api/session/", sessionRoutes); //inicio de ruta publica
 
 //authMdw
+//a esta ruta entra solo alguien que sea admin
 app.use("/api/private/", authMdw, (req, res) => {
   const username = req.session.user;
   return res.json({

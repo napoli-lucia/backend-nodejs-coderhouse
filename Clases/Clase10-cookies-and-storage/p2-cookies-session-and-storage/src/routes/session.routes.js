@@ -2,6 +2,7 @@ const { Router } = require("express");
 
 const router = Router();
 
+// LOGIN
 router.get("/login", async (req, res) => {
   const { username, password } = req.body;
   console.log("🚀 ~ file: session.routes.js:7 ~ router.get ~ BODY:", req.body);
@@ -10,6 +11,7 @@ router.get("/login", async (req, res) => {
   if (username !== "rabin" && password !== "123456") {
     return res.json({ message: `login fallido` });
   }
+  //console.log("Se cumple: ",username !== "rabin" && password !== "123456")
 
   req.session.user = username;
   req.session.admin = true;
@@ -21,6 +23,8 @@ router.get("/login", async (req, res) => {
   return res.json({ message: "login success" });
 });
 
+
+// LOGOUT
 router.get("/logout", async (req, res) => {
   req.session.destroy((error) => {
     if (!error) return res.json({ message: `logout successfully` });
@@ -28,8 +32,10 @@ router.get("/logout", async (req, res) => {
   });
 });
 
+
+// WELCOME
+//http://localhost:5000/api/session/welcome?name=luis
 router.get("/welcome", async (req, res) => {
-  // localhost:5000/api/session/welcome?name=luis
   const { name } = req.query;
   console.log("🚀 ~ file: session.routes.js:8 ~ router.get ~ name:", name);
 
