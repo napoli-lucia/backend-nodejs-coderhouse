@@ -41,7 +41,8 @@ router.get("/chat", (req, res) => {
 
 //Vista products con paginacion y boton para agregar a carrito
 router.get("/products", (req, res) => {
-    console.log(req.query);
+    const user = req.session.user;
+    //console.log(req.query);
     //const { page = 1, limit = 10, sort = null, query = null } = req.query;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -50,14 +51,14 @@ router.get("/products", (req, res) => {
     // : req.query.sort === 'Descendente' ? -1 
     // : null;
 
-    console.log(req.query.sort);
+    //console.log(req.query.sort);
     let sort;
     if(req.query.sort == 'Ascendente') sort=1;
     if(req.query.sort == 'Descendente') sort=-1;
     if(req.query.sort != 'Ascendente' && req.query.sort != 'Descendente') sort=null;
 
     const query = req.query.query || null;
-    console.log("🚀 ~ router.get ~ query:", query)
+    //console.log("🚀 ~ router.get ~ query:", query)
 
     let queryObj = {}
     if(query != undefined && query != 'null' ){
@@ -74,7 +75,8 @@ router.get("/products", (req, res) => {
             hasPrevPage: result.hasPrevPage,
             hasNextPage: result.hasNextPage,
             page: result.page,
-            totalPages: result.totalPages
+            totalPages: result.totalPages,
+            user: user
         })
     }).catch( err => {
         console.log("productManager.getProducts ~ err:", err);
@@ -109,5 +111,25 @@ router.get("/carts/:cid", (req, res) => {
 router.get(`/register`, async (req, res) => {
     res.render("register");
 });
-  
+
+//Vista login usuario
+router.get(`/login`, async (req, res) => {
+    res.render("login");
+});
+
+//Vista perfil usuario
+router.get(`/profile`, async (req, res) => {
+    const user = req.session.user;
+    console.log("🚀 ~ router.get ~ user:", user)
+    
+
+    res.render("profile", {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        age: user.age,
+    });
+});
+
+
 export default router;
