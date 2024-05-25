@@ -12,6 +12,7 @@
 - [Entregable 3](./Entregas-Desafios/entrega-03/) Servidor con express
 - [Entregable 4](./Entregas-Desafios/entrega-04/) Websockets + Handlebars
 - [Entregable 5](./Entregas-Desafios/entrega-05/) Integracion ecommerce
+- [Entregable 6](./Entregas-Desafios/entrega-06/) Implementación de login
 
 ## Entregas proyecto
 
