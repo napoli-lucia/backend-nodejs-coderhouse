@@ -16,12 +16,12 @@ const PORT = 5000;
 const DB_HOST = "localhost";
 const DB_PORT = 27017;
 const DB_NAME = "mongoCredEncryptDB";
-
 const MONGO_URL = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(
   session({
     store: mongoStore.create({
@@ -34,6 +34,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());

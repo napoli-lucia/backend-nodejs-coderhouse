@@ -7,12 +7,13 @@ const localStrategy = local.Strategy;
 
 const initializePassport = () => {
 
+  //REGISTER
   passport.use(
     "register",
     new localStrategy(
       {
-        passReqToCallback: true,
-        usernameField: "email",
+        passReqToCallback: true, //password requerido
+        usernameField: "email", //quiero usar el email
       },
       async (req, username, password, done) => {
         console.log(
@@ -23,11 +24,12 @@ const initializePassport = () => {
         const { first_name, last_name, email, age } = req.body;
 
         try {
+          // Busco al user por el email
           let user = await userModel.findOne({ email });
           console.log("🚀 ~ file: passport.config.js ~ user:", user);
           
+          //Si el usuario existe (null: no hay error, false: no se genero un user nuevo)
           if (user) {
-            // el usuario existe
             return done(null, false);
           }
 
@@ -46,7 +48,7 @@ const initializePassport = () => {
           if (!newUser) {
             return res
               .status(500)
-              .json({ message: `we have some issues register this user` });
+              .json({ message: `we have some issues registering this user` });
           }
 
           return done(null, newUser);
@@ -58,6 +60,7 @@ const initializePassport = () => {
     )
   );
 
+  //LOGIN
   passport.use(
     "login",
     new localStrategy(
@@ -92,6 +95,8 @@ const initializePassport = () => {
 
   passport.serializeUser((user, done) => {
     done(null, user._id);
+    //null: que no hay error
+    //pasamos el id del usuario que registramos
   });
 
   passport.deserializeUser(async (id, done) => {

@@ -15,10 +15,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const session = req.session;
-    console.log(
-      "🚀 ~ file: session.routes.js:17 ~ router.post ~ session:",
-      session
-    );
+    //console.log("~ ~ router.post ~ session:", session)
 
     const findUser = await userModel.findOne({ email });
 
@@ -35,14 +32,17 @@ router.post("/login", async (req, res) => {
     // }
 
     // TODO: no es la mejor solucion, pensar en un pre mdl de mongo para mejorar esto
-    delete findUser.password;
+    const user = {...findUser}._doc
+    delete user.password; //no lo borra
+    console.log("~ ~ router.post ~ user:", user)
+
     req.session.user = {
-      // TODO: eliminar el password
       ...findUser,
     };
+    //console.log("~ ~ router.post ~ req.session.user:", req.session.user)
 
-    // **** **** 6798 ofuscar
-    //mostrar solo una parte de los digitos
+    // ofuscar: mostrar solo una parte de los digitos
+    // **** **** 6798
 
     return res.render("profile", {
       firstName: req.session?.user?.first_name || findUser.first_name,
@@ -51,10 +51,7 @@ router.post("/login", async (req, res) => {
       age: req.session?.user?.age || findUser.age,
     });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: session.routes.js:42 ~ router.post ~ error:",
-      error
-    );
+    console.log("~ ~ router.post ~ error:", error)
   }
 });
 
@@ -100,10 +97,7 @@ router.post("/register", async (req, res) => {
 router.post("/recover-psw", async (req, res) => {
   try {
     const { new_password, email } = req.body;
-    console.log(
-      "🚀 ~ file: session.routes.js ~ router.post ~ req.body:",
-      req.body
-    );
+    console.log("~ ~ router.post ~ req.body:", req.body)
 
     const newPswHash = await createHash(new_password);
     const user = await userModel.findOne({ email });
@@ -115,6 +109,7 @@ router.post("/recover-psw", async (req, res) => {
     }
 
     //TODO agregar old password
+    
     const updateUser = await userModel.findByIdAndUpdate(
       user._id, {password: newPswHash});
 

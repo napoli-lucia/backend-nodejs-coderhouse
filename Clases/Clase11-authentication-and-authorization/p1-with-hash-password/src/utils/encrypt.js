@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 //Retornar un hash ya creado
 const createHash = async (psw) => {
-    //var de salto, que tan robusto es el algoritmo de hasheo
+  //var de salto, que tan robusto es el algoritmo de hasheo
   const salt = await bcrypt.genSalt(); //es asincrono
   //por defecto tiene valor 10
   return await bcrypt.hashSync(psw, salt);
