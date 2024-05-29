@@ -13,6 +13,7 @@
 - [Entregable 4](./Entregas-Desafios/entrega-04/) Websockets + Handlebars
 - [Entregable 5](./Entregas-Desafios/entrega-05/) Integracion ecommerce
 - [Entregable 6](./Entregas-Desafios/entrega-06/) Implementación de login
+- [Entregable 7](./Entregas-Desafios/entrega-07/) Refactor login
 
 ## Entregas proyecto
 
