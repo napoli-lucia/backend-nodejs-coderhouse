@@ -36,6 +36,7 @@ class UserManager{
                 await usersModel.updateOne({ email }, {$set: {"role": "admin"}})
             }
             return {message: `Nuevo usuario agregado: ${newUser}`};
+            //agregar newUser
             
         } catch (error) {
             throw new Error(`No se puede agregar al usuario\n ${error.message}`);

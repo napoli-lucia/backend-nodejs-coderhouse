@@ -16,7 +16,7 @@ import 'dotenv/config'
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import mongoStore from "connect-mongo";
-
+import initializePassport from "./config/passport.config.js";
 
 console.log("SERVER");
 const app = express();
@@ -61,7 +61,11 @@ app.use(
       resave: false,
       saveUninitialized: false,
     })
-  );
+);
+
+// initializePassport();
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // config handlebars
 //app.engine("handlebars", handlebars.engine());
