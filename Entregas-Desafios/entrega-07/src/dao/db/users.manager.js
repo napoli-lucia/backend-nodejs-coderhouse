@@ -8,8 +8,11 @@ class UserManager{
 
 	async getUser(email, password){
         try {
+            if(email==="adminCoder@coder.com" && password==="adminCod3r123"){
+                return {email, role: "admin"}
+            }
+
             const findUser = await usersModel.findOne({ email });
-            //console.log("🚀 ~ UserManager ~ getUser ~ findUser:", findUser)
 
             if (!findUser) return { error: `usuario no registrado`, code: 400 };
 
@@ -30,16 +33,10 @@ class UserManager{
 
             const newUser = await usersModel.create({first_name, last_name, email, age, password: pswHashed});
 
-            const adminComparePsw = await isValidPasswd(password, "adminCod3r123");
-
-            if(email==="adminCoder@coder.com" && adminComparePsw){
-                await usersModel.updateOne({ email }, {$set: {"role": "admin"}})
-            }
-            return {message: `Nuevo usuario agregado: ${newUser}`};
-            //agregar newUser
+            return {message: `Nuevo usuario agregado`, user: newUser};
             
         } catch (error) {
-            throw new Error(`No se puede agregar al usuario\n ${error.message}`);
+            throw new Error(`No se puede registar al usuario\n ${error.message}`);
         }
     }
 

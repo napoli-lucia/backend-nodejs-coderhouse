@@ -1,7 +1,6 @@
 import  { Router } from "express";
+import passport from "passport";
 
-// import {ProductManager} from "../dao/filesystem/productManager.js";
-// const manager = new ProductManager("./src/data/productos.json");
 import {ProductManager} from "../dao/db/products.manager.js";
 const productManager = new ProductManager();
 import {CartManager} from "../dao/db/carts.manager.js";
@@ -9,6 +8,7 @@ const cartManager = new CartManager();
 
 const router = Router();
 
+//** Vista de todos los productos **/
 router.get("/", (req, res) => {
     productManager.getAllProducts().then( result => {
         res.render("home", {products: result})
@@ -23,6 +23,7 @@ router.get("/", (req, res) => {
     })
 })
 
+//** Vista de todos los productos EN TIEMPO REAL**/
 router.get("/realTimeProducts", (req, res) => {
     productManager.getAllProducts().then( result => {
         res.render("realTimeProducts", {products: result})
@@ -35,15 +36,16 @@ router.get("/realTimeProducts", (req, res) => {
     })
 })
 
+//** Vista del chat **/
 router.get("/chat", (req, res) => {
     res.render("chat", {})
 })
 
-//Vista products con paginacion y boton para agregar a carrito
+//** Vista de productos con paginacion y boton para agregar a carrito **/
 router.get("/products", (req, res) => {
     const user = req.session.user;
     //console.log(req.query);
-    //const { page = 1, limit = 10, sort = null, query = null } = req.query;
+    
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
         
@@ -87,8 +89,7 @@ router.get("/products", (req, res) => {
     })
 })
 
-
-//Vista de un carrito
+//** Vista de un carrito **/
 router.get("/carts/:cid", (req, res) => {
     const cid = req.params.cid;
 
@@ -107,17 +108,57 @@ router.get("/carts/:cid", (req, res) => {
     })
 })
 
-//Vista registro usuario
-router.get(`/register`, async (req, res) => {
-    res.render("register");
+//********************/
+
+//** Vista registro usuario **/
+
+// Register - GET
+router.get("/register", async (req, res) => {
+  res.render("register");
 });
 
-//Vista login usuario
-router.get(`/login`, async (req, res) => {
-    res.render("login");
+// Register - POST
+router.post(
+  "/register",
+  passport.authenticate("register", {
+    successRedirect: "/",
+    failureRedirect: "/failregister",
+    failureFlash: true,
+  })
+);
+
+// Register - fail
+router.get("/failregister", async (req, res) => {
+  res.send({ error: "register strategy failed" });
 });
 
-//Vista perfil usuario
+//********************/
+
+//** Vista login usuario **/
+
+// Login - GET
+router.get("/login", async (req, res) => {
+  res.render("login");
+});
+
+// Login - POST
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    successRedirect: "/",
+    failureRedirect: "/faillogin",
+    failureFlash: true,
+  })
+);
+
+// Login - fail
+router.get("/faillogin", async (req, res) => {
+  res.send({ error: "login strategy failed" });
+});
+
+//********************/
+
+//** Vista perfil usuario **/
 router.get(`/profile`, async (req, res) => {
     const user = req.session.user;
     console.log("🚀 ~ router.get ~ user:", user)
@@ -131,7 +172,7 @@ router.get(`/profile`, async (req, res) => {
     });
 });
 
-//Vista recuperar contraseña
+//** Vista recuperar contraseña **/
 router.get("/recover", async (req, res) => {
     res.render("recover");
 });

@@ -34,7 +34,8 @@ router.post("/login", async (req, res, next) => {
       first_name: foundUser.first_name,
       last_name: foundUser.last_name, 
       email: foundUser.email,
-      age: foundUser.age
+      age: foundUser.age,
+      role: foundUser.role
     }
     //console.log("🚀 ~ router.post ~ req.session.user:", req.session.user)
 

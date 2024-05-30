@@ -17,6 +17,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import mongoStore from "connect-mongo";
 import initializePassport from "./config/passport.config.js";
+import passport from "passport";
 
 console.log("SERVER");
 const app = express();
@@ -63,9 +64,9 @@ app.use(
     })
 );
 
-// initializePassport();
-// app.use(passport.initialize());
-// app.use(passport.session());
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // config handlebars
 //app.engine("handlebars", handlebars.engine());

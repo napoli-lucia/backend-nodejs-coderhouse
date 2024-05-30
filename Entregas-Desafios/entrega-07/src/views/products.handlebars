@@ -5,7 +5,10 @@
 {{#if user}}
   <h3>Bienvenido {{user.first_name}} {{user.last_name}}</h3>
   <p>Email: {{user.email}}</p>
-  <p>Age: {{user.age}}</p>
+  {{#if user.age}}
+    <p>Edad: {{user.age}}</p>
+  {{/if}}
+  <p>Rol: {{user.role}}</p>
   <form method="get" action="/api/session/logout">
     <button class="logOutButton" type="submit">Logout</button>
   </form>
