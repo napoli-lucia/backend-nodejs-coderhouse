@@ -1,10 +1,11 @@
 const passport = require("passport");
 const GithubStrategy = require("passport-github2");
 const userModel = require("../model/user.model");
+const dotenv = require("dotenv");
+dotenv.config();
 
-// USE VARIABLES DE ENTORNO
-const GITHUB_CLIENT_ID = "5628781e483140238949"; 
-const GITHUB_CLIENT_SECRET = "f3ff81f8c183b4e18a264111839d4fa51dc9a20d";
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID; 
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 const initializePassport = () => {
   passport.use(
@@ -16,10 +17,7 @@ const initializePassport = () => {
         callbackURL: "http://localhost:5000/api/session/github/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log(
-          "🚀 ~ file: passport.config.js:20 ~ async ~ profile:",
-          profile
-        );
+        console.log("🚀 ~ profile:", profile);
         try {
           let user = await userModel.findOne({ email: profile._json?.email });
           if (!user) {

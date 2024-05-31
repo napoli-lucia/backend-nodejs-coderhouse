@@ -1,4 +1,5 @@
 import  { Router } from "express";
+import passport from "passport";
 import { UserManager } from "../dao/db/users.manager.js";
 
 const manager = new UserManager();
@@ -96,5 +97,25 @@ router.post("/recover-psw", async (req, res, next) => {
     next(error);
   }
 });
+
+// LOGIN GITHUB
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {}
+);
+
+router.get(
+  "/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    try {
+      req.session.user = req.user;
+      res.redirect("/products");
+    } catch (error) {
+      console.log("🚀 ~ error:", error)
+    }
+  }
+);
 
 export default router;

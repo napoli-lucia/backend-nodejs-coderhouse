@@ -60,11 +60,16 @@ router.get("/profile", authMdw, async (req, res) => {
   console.log("🚀 ~ file: views.routes.js:20 ~ router.get ~ user:", user);
 
   res.render("profile", {
-    user,
-    carrito: {
-      carritoId: "carrito-1",
-      productos: [{ productoId: "1", nombre: "camisa" }],
-    },
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    age: user.age,
+
+    // user,
+    // carrito: {
+    //   carritoId: "carrito-1",
+    //   productos: [{ productoId: "1", nombre: "camisa" }],
+    // },
   });
 });
 
