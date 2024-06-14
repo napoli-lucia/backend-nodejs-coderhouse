@@ -6,7 +6,9 @@ const passport = require("passport");
 
 //Internal imports
 const authRoutes = require("./routes/auth.routes")
-
+const userRoutes = require("./routes/user.routes");
+const notesRoutes = require("./routes/notes.routes");
+const initializePassport = require("./config/passport.config");
 
 const app = express();
 
@@ -22,10 +24,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //TODO: add passport function with strategies
+initializePassport();
 app.use(passport.initialize());
 
 //Base Routes
 app.use('/api/authentication', authRoutes);
+app.use("/api/users/", userRoutes);
+app.use("/api/notes/", notesRoutes);
 
 mongoose
   .connect(MONGO_URL)
