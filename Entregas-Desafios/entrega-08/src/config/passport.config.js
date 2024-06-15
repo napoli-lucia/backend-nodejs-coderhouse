@@ -1,9 +1,11 @@
 import passport from "passport";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
+import jwt from "passport-jwt";
 import 'dotenv/config'
 import usersModel from "../dao/models/users.model.js"
 import { UserManager } from "../dao/db/users.manager.js";
+import { SECRET_JWT } from "../utils/jwt.js";
 
 const manager = new UserManager();
 
@@ -11,6 +13,18 @@ const localStrategy = local.Strategy;
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID; 
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
+
+const cookieJWTExtractor = (req) => {
+  //console.log("🚀 ~ cookieJWTExtractor ~ req:", req); 
+  let token;
+  if (req && req.cookies) {
+    token = req.cookies["cookieToken"];
+  }
+  return token;
+};
 
 const initializePassport = () => {
 
@@ -115,7 +129,6 @@ const initializePassport = () => {
     )
   );
 
-
   passport.serializeUser((user, done) => {
     done(null, user._id);
     //null: que no hay error
@@ -126,6 +139,28 @@ const initializePassport = () => {
     let user = await usersModel.findById({ _id: id });
     done(null, user);
   });
+
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      {
+        //jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieJWTExtractor]),
+        secretOrKey: SECRET_JWT,
+      },
+      async (jwtPayload, done) => {
+        console.log("🚀 ~ jwtPayload INFO:", jwtPayload);
+
+        try {
+          return done(null, jwtPayload);
+          
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
+
 };
 
 export default initializePassport;
