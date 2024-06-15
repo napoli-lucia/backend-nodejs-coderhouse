@@ -14,6 +14,7 @@
 - [Entregable 5](./Entregas-Desafios/entrega-05/) Integracion ecommerce
 - [Entregable 6](./Entregas-Desafios/entrega-06/) Implementación de login
 - [Entregable 7](./Entregas-Desafios/entrega-07/) Refactor login
+- [Entregable 8](./Entregas-Desafios/entrega-08/) 2da Integracion ecommerce
 
 ## Entregas proyecto
 
