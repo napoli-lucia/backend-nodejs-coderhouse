@@ -9,13 +9,12 @@ configurar los siguientes elementos:
 ✓ Crear un modelo User el cual contará
 con los campos:
 
-○ first_name:String,
-○ last_name:String,
-○ email:String (único)
-○ age:Number,
-○ password:String(Hash)
-○ cart:Id con referencia a Carts
-○ role:String(default:’user’)
+* first_name:String,last_name:String,
+* email:String (único)
+* age:Number,
+* password:String(Hash)
+* cart:Id con referencia a Carts
+* role:String(default:’user’)
 
 ✓ Desarrollar las estrategias de Passport
 para que funcionen con este modelo de
