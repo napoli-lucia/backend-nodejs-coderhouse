@@ -26,8 +26,9 @@ class UserServiceDao{
         }
     }
 
-	async addUser(first_name, last_name, email, age, password){
+	async addUser(user){
         try {
+            const { first_name, last_name, email, age, password } = user;
             const pswHashed = await createHash(password);
 
             const newCart = await cartService.addCart();

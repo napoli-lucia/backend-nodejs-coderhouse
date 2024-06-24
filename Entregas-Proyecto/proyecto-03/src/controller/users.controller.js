@@ -4,7 +4,10 @@ import { userService } from "../repository/index.js";
 // LOGOUT
 const logoutCtrl = async (req, res) => {
   req.session.destroy((err) => {
-    if (!err) return res.redirect("/login");
+    if (!err){
+      console.log("Se cerró la sesión...")
+      return res.redirect("/login")
+    };
     return res.send({ message: `logout error`, body: err });
   });
 };
@@ -59,7 +62,7 @@ const registerCtrl = async (req, res, next) => {
     console.log("BODY REGISTER: ", req.body);
     const { first_name, last_name, email, age, password } = req.body;
 
-    const result = await userService.addUser(first_name, last_name, email, age, password);
+    const result = await userService.addUser({first_name, last_name, email, age, password});
 
     if (result.error) {
       return res.status(500).json({

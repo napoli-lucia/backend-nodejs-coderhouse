@@ -9,6 +9,7 @@ import {
     viewProfileCtrl,
     viewRecoverPswCtrl
 } from "../controller/views.controller.js"
+import authMdw from "../middleware/auth.middleware.js"
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.get("/", viewHomeProductsCtrl);
 router.get("/realTimeProducts", viewRealTimeProductsCtrl);
 
 //** Vista del chat **/
-router.get("/chat", viewChatCtrl);
+router.get("/chat", authMdw(["USER"]), viewChatCtrl);
 
 //** Vista de productos con paginacion y boton para agregar a carrito **/
 router.get("/products", viewProductsCtrl);

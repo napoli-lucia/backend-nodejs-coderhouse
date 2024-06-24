@@ -1,3 +1,5 @@
+import UserDTO from "../dto/users.dto.js";
+
 export default class UserRepositoryDao {
   constructor(dao) {
     this.dao = dao;
@@ -7,8 +9,9 @@ export default class UserRepositoryDao {
     return this.dao.getUser(email, password);
   }
 
-  addUser = async (first_name, last_name, email, age, password) => {
-    return this.dao.addUser(first_name, last_name, email, age, password);
+  addUser = async (user) => {
+    const userDTO = new UserDTO(user);
+    return this.dao.addUser(userDTO);
   }
 
   changePassword = async (email, new_password) => {

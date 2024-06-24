@@ -9,29 +9,30 @@ import {
     updateProductQuantityInCartCtrl,
     updateCartCtrl
 } from "../controller/carts.controller.js"
+import authMdw from "../middleware/auth.middleware.js"
 
 const router = Router();
 
 // POST /api/carts/
-router.post(`/`, addCartCtrl);
+router.post(`/`, authMdw(["USER"]), addCartCtrl);
 
 // GET /api/carts/:cid
-router.get(`/:cid`, idErrors, getCartByIdCtrl);
+router.get(`/:cid`, authMdw(["USER"]), idErrors, getCartByIdCtrl);
 
 // POST /api/carts/:cid/product/:pid
-router.post(`/:cid/product/:pid`, idErrors, addProductToCartCtrl);
+router.post(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, addProductToCartCtrl);
 
 // DELETE /api/carts/:cid/product/:pid
-router.delete(`/:cid/product/:pid`, idErrors, deleteProductInCartCtrl);
+router.delete(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, deleteProductInCartCtrl);
 
 // DELETE /api/carts/:cid
-router.delete(`/:cid`, idErrors, deleteAllInCartCtrl);
+router.delete(`/:cid`, authMdw(["USER"]), idErrors, deleteAllInCartCtrl);
 
 // PUT /api/carts/:cid/product/:pid
-router.put(`/:cid/product/:pid`, idErrors, updateProductQuantityInCartCtrl);
+router.put(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, updateProductQuantityInCartCtrl);
 
 // PUT /api/carts/:cid
-router.put(`/:cid`, idErrors, updateCartCtrl);
+router.put(`/:cid`, authMdw(["USER"]), idErrors, updateCartCtrl);
 
 //Funcion para chequear errores en id's
 function idErrors(req, res, next) {
