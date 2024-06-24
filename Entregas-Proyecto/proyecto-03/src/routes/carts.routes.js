@@ -7,7 +7,8 @@ import {
     deleteProductInCartCtrl,
     deleteAllInCartCtrl,
     updateProductQuantityInCartCtrl,
-    updateCartCtrl
+    updateCartCtrl,
+    buyCartCtrl
 } from "../controller/carts.controller.js"
 import authMdw from "../middleware/auth.middleware.js"
 
@@ -33,6 +34,9 @@ router.put(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, updateProductQuant
 
 // PUT /api/carts/:cid
 router.put(`/:cid`, authMdw(["USER"]), idErrors, updateCartCtrl);
+
+// POST /api/carts/:cid/purchase
+router.post(`/:cid/purchase`, authMdw(["USER"]), idErrors, buyCartCtrl);
 
 //Funcion para chequear errores en id's
 function idErrors(req, res, next) {

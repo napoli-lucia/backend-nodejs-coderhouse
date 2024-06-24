@@ -24,6 +24,12 @@ const addCartCtrl = async (req, res, next) => {
 const getCartByIdCtrl = async (req, res, next) => {
     try {
         console.log(`Get cart with id ${req.params.cid}`);
+        if (req.user.user.cart != req.params.cid) {
+            return res.status(403).json({
+                status: 403,
+                message: "Acceso denegado. Rol no autorizado.",
+            });
+        }
         const result = await cartService.getCartById(req.params.cid);
         if (result.error) {
             return res.status(404).json({
@@ -137,6 +143,28 @@ const updateCartCtrl = async (req, res, next) => {
     }
 };
 
+// Finalizar el proceso de compra del carrito
+const buyCartCtrl = async (req, res, next) => {
+    try {
+        // const result = await cartService.buyCart(req.params.cid);
+        const result = await cartService.buyCart(req.user.user);
+
+        if (result.error) {
+            return res.status(404).json({
+                status: 404,
+                message: result.error,
+            });
+        }
+        return res.status(200).json({
+            status: 200,
+            message: result.message,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export {
     addCartCtrl,
@@ -145,5 +173,6 @@ export {
     deleteProductInCartCtrl,
     deleteAllInCartCtrl,
     updateProductQuantityInCartCtrl,
-    updateCartCtrl
+    updateCartCtrl,
+    buyCartCtrl
 };

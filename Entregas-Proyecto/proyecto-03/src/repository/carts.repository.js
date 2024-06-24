@@ -30,4 +30,8 @@ export default class CartRepositoryDao {
   updateCart = async (cid, newData) => {
     return this.dao.updateCart(cid, newData);
   };
+
+  buyCart = async (user) => {
+    return this.dao.buyCart(user);
+  };
 }
