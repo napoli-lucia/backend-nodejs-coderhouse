@@ -1,5 +1,4 @@
 import  { Router } from "express";
-import mongoose from "mongoose";
 import {
     addCartCtrl,
     getCartByIdCtrl,
@@ -11,50 +10,33 @@ import {
     buyCartCtrl
 } from "../controller/carts.controller.js"
 import authMdw from "../middleware/auth.middleware.js"
+import authUserMdw from "../middleware/auth-user.middleware.js";
+import idErrors from "../middleware/id.middleware.js"; 
 
 const router = Router();
 
 // POST /api/carts/
-router.post(`/`, authMdw(["USER"]), addCartCtrl);
+router.post(`/`, authMdw(["USER"]), authUserMdw, addCartCtrl);
 
 // GET /api/carts/:cid
-router.get(`/:cid`, authMdw(["USER"]), idErrors, getCartByIdCtrl);
+router.get(`/:cid`, authMdw(["USER"]), authUserMdw, idErrors, getCartByIdCtrl);
 
 // POST /api/carts/:cid/product/:pid
-router.post(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, addProductToCartCtrl);
+router.post(`/:cid/product/:pid`, authMdw(["USER"]), authUserMdw, idErrors, addProductToCartCtrl);
 
 // DELETE /api/carts/:cid/product/:pid
-router.delete(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, deleteProductInCartCtrl);
+router.delete(`/:cid/product/:pid`, authMdw(["USER"]), authUserMdw, idErrors, deleteProductInCartCtrl);
 
 // DELETE /api/carts/:cid
-router.delete(`/:cid`, authMdw(["USER"]), idErrors, deleteAllInCartCtrl);
+router.delete(`/:cid`, authMdw(["USER"]), authUserMdw, idErrors, deleteAllInCartCtrl);
 
 // PUT /api/carts/:cid/product/:pid
-router.put(`/:cid/product/:pid`, authMdw(["USER"]), idErrors, updateProductQuantityInCartCtrl);
+router.put(`/:cid/product/:pid`, authMdw(["USER"]), authUserMdw, idErrors, updateProductQuantityInCartCtrl);
 
 // PUT /api/carts/:cid
-router.put(`/:cid`, authMdw(["USER"]), idErrors, updateCartCtrl);
+router.put(`/:cid`, authMdw(["USER"]), authUserMdw, idErrors, updateCartCtrl);
 
 // POST /api/carts/:cid/purchase
-router.post(`/:cid/purchase`, authMdw(["USER"]), idErrors, buyCartCtrl);
-
-//Funcion para chequear errores en id's
-function idErrors(req, res, next) {
-    if (req.params.pid && !mongoose.Types.ObjectId.isValid(req.params.pid)) {
-        console.log("Product id error");
-        return res.status(400).json({
-            status: 400,
-            message: `Product id is not valid`,
-        });
-    }
-    if (req.params.cid && !mongoose.Types.ObjectId.isValid(req.params.cid)) {
-        console.log("Cart id error");
-        return res.status(400).json({
-            status: 400,
-            message: `Cart id is not valid`,
-        });
-    }
-    next();
-};
+router.post(`/:cid/purchase`, authMdw(["USER"]), authUserMdw, idErrors, buyCartCtrl);
 
 export default router;

@@ -86,11 +86,12 @@ const viewProductsCtrl = (req, res) => {
 //** Vista de un carrito **/
 const viewCartByIdCtrl = (req, res) => {
     const cid = req.params.cid;
-    //console.log("🚀 ~ router.get ~ cid:", cid);
+    const user = req.session.user;
 
     cartService.getCartById(cid).then( result => {
         res.render("cart", {
-            products: result[0].products
+            products: result[0].products,
+            user: user
         })
     }).catch( err => {
         console.log("🚀 ~ cartService.getCartById ~ err:", err);

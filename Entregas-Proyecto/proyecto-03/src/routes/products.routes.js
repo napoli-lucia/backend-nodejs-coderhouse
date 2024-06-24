@@ -9,6 +9,7 @@ import {
     updateProductByIdCtrl
 } from "../controller/products.controller.js"
 import authMdw from "../middleware/auth.middleware.js"
+import idErrors from "../middleware/id.middleware.js";
 
 const router = Router();
 
@@ -32,18 +33,5 @@ router.post(`/`, authMdw(["ADMIN"]), addProductCtrl);
 
 // PUT /api/products/:pid
 router.put(`/:pid`, authMdw(["ADMIN"]), idErrors, updateProductByIdCtrl);
-
-//Funcion para chequear errores en id
-function idErrors(req, res, next) {
-    if (!mongoose.Types.ObjectId.isValid(req.params.pid)) {
-        console.log("Id error");
-        return res.status(400).json({
-            status: 400,
-            message: `this id is not valid`,
-        });
-    }
-    next();
-};
-
 
 export default router;
