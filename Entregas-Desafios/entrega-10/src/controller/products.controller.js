@@ -1,6 +1,9 @@
 import { UniqueError } from "../handle-errors/uniqueError.js"
 import { productService } from "../repository/index.js";
 import { generateProduct } from "../utils/generate-products.js";
+import { HttpResponse } from "../middleware/error-handle.js";
+
+const httpResponse = new HttpResponse();
 
 // INSERTION
 const insertProductsCtrl = async (req, res, next) => {
@@ -20,12 +23,11 @@ const insertProductsCtrl = async (req, res, next) => {
 const mockingProductsCtrl = async (req, res, next) => {
     try {
         let products = [];
-        const MAX_products = 5;
+        const MAX_products = 100;
         for (let i = 0; i < MAX_products; i++) {
             products.push(generateProduct());
         };
         console.log("🚀 ~ mockingProductsCtrl ~ products:", products);
-
 
         let result = await productService.insertMockingProducts(products);
         return res.json({
@@ -43,13 +45,13 @@ const getProductsCtrl = async (req, res, next) => {
     try {
         console.log("GET products - req.query:", req.query)
 
-        //TODO Chequeo de queries validas
         if (req.query.limit && isNaN(req.query.limit) || Number(req.query.limit) < 0) {
             console.log("GET: Limit error");
-            return res.status(400).json({
-                status: "error",
-                message: "this limit is not valid",
-            });
+            return httpResponse.BadRequest(res, "this limit is not valid");
+        }
+        if (req.query.page && isNaN(req.query.page) || Number(req.query.page) < 0) {
+            console.log("GET: Page error");
+            return httpResponse.BadRequest(res, "this page is not valid");
         }
 
         const page = Number(req.query.page) || 1;
@@ -59,9 +61,7 @@ const getProductsCtrl = async (req, res, next) => {
             : req.query.sort === 'Descendente' ? -1
                 : null;
 
-
         const query = req.query.query || null;
-        //console.log("🚀 ~ router.get ~ query:", query)
 
         let queryObj = {}
         if (query != undefined && query != 'null') {
@@ -87,14 +87,9 @@ const getProductsCtrl = async (req, res, next) => {
 const getProductByIdCtrl = async (req, res, next) => {
     try {
         console.log(`Get product with id ${req.params.pid} `);
-
         const result = await productService.getProductById(req.params.pid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
+
+        if (result.error) return httpResponse.NotFound(res, result.error);
         return res.send(result);
 
     } catch (error) {
@@ -106,18 +101,11 @@ const getProductByIdCtrl = async (req, res, next) => {
 const deleteProductByIdCtrl = async (req, res, next) => {
     try {
         console.log(`Delete product with id ${req.params.pid} `);
-
         const result = await productService.deleteProduct(req.params.pid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
@@ -130,23 +118,13 @@ const addProductCtrl = async (req, res, next) => {
         const product = req.body;
 
         const result = await productService.addProduct(product);
-        if (result.error) {
-            return res.status(400).json({
-                status: 400,
-                message: result.error,
-            });
-        };
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.BadRequest(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         if (error instanceof UniqueError) {
-            return res.status(400).json({
-                status: 400,
-                message: error.message,
-            });
+            return httpResponse.BadRequest(res, error.message);
         }
         next(error);
     }
@@ -158,16 +136,9 @@ const updateProductByIdCtrl = async (req, res, next) => {
         console.log(`Edit product with id ${req.params.pid} `);
 
         const result = await productService.updateProduct(req.params.pid, req.body);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        };
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);

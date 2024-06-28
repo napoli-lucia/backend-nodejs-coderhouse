@@ -4,16 +4,9 @@ import { cartService } from "../repository/index.js";
 const addCartCtrl = async (req, res, next) => {
     try {
         const result = await cartService.addCart();
-        if (result.error) {
-            return res.status(400).json({
-                status: 400,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.BadRequest(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
@@ -24,14 +17,10 @@ const addCartCtrl = async (req, res, next) => {
 const getCartByIdCtrl = async (req, res, next) => {
     try {
         console.log(`Get cart with id ${req.params.cid}`);
-        
+
         const result = await cartService.getCartById(req.params.cid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
         return res.send(result);
 
     } catch (error) {
@@ -43,12 +32,8 @@ const getCartByIdCtrl = async (req, res, next) => {
 const addProductToCartCtrl = async (req, res, next) => {
     try {
         const result = await cartService.addProductToCart(req.params.cid, req.params.pid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
         return res.send(result);
 
     } catch (error) {
@@ -60,16 +45,9 @@ const addProductToCartCtrl = async (req, res, next) => {
 const deleteProductInCartCtrl = async (req, res, next) => {
     try {
         const result = await cartService.deleteProductInCart(req.params.cid, req.params.pid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
@@ -80,16 +58,9 @@ const deleteProductInCartCtrl = async (req, res, next) => {
 const deleteAllInCartCtrl = async (req, res, next) => {
     try {
         const result = await cartService.deleteAllInCart(req.params.cid);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
@@ -100,38 +71,23 @@ const deleteAllInCartCtrl = async (req, res, next) => {
 const updateProductQuantityInCartCtrl = async (req, res, next) => {
     try {
         const result = await cartService.updateProductQuantityInCart(req.params.cid, req.params.pid, req.body.quantity);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
     }
 };
 
-
 // Actualizar carrito con arreglo de productos
 const updateCartCtrl = async (req, res, next) => {
     try {
         console.log("🚀 ~ router.put ~ req.body:", req.body)
         const result = await cartService.updateCart(req.params.cid, req.body);
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
@@ -144,22 +100,14 @@ const buyCartCtrl = async (req, res, next) => {
         // const result = await cartService.buyCart(req.params.cid);
         const result = await cartService.buyCart(req.user.user);
 
-        if (result.error) {
-            return res.status(404).json({
-                status: 404,
-                message: result.error,
-            });
-        }
-        return res.status(200).json({
-            status: 200,
-            message: result.message,
-        });
+        if (result.error) return httpResponse.NotFound(res, result.error);
+
+        return httpResponse.OK(res, result.message);
 
     } catch (error) {
         next(error);
     }
 };
-
 
 export {
     addCartCtrl,

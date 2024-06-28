@@ -1,30 +1,28 @@
 import { productService } from "../repository/index.js";
 import { cartService } from "../repository/index.js";
+import { HttpResponse } from "../middleware/error-handle.js";
+
+const httpResponse = new HttpResponse();
 
 //** Vista de todos los productos **/
 const viewHomeProductsCtrl = (req, res) => {
-    productService.getAllProducts().then( result => {
-        res.render("home", {products: result})
+    productService.getAllProducts().then(result => {
+        res.render("home", { products: result })
         //console.log("🚀 ~ productService.getAllProducts ~ result:", result)
-    }).catch( err => {
+    }).catch(err => {
         console.log("productService.getProducts ~ err:", err);
-        res.status(400).json({
-            status: 400,
-            message: err.message,
-        })
+        httpResponse.BadRequest(res, err.message);
     })
 };
 
 //** Vista de todos los productos EN TIEMPO REAL**/
 const viewRealTimeProductsCtrl = (req, res) => {
-    productService.getAllProducts().then( result => {
-        res.render("realTimeProducts", {products: result})
-    }).catch( err => {
+    productService.getAllProducts().then(result => {
+        res.render("realTimeProducts", { products: result })
+    }).catch(err => {
         console.log("productService.getProducts ~ err:", err);
-        res.status(400).json({
-            status: 400,
-            message: err.message,
-        })
+        httpResponse.BadRequest(res, err.message);
+
     })
 };
 
@@ -38,31 +36,31 @@ const viewProductsCtrl = (req, res) => {
     const user = req.session.user;
     console.log("🚀 ~ router.get ~ user:", user);
     //console.log(req.query);
-    
+
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
-        
+
     // const sort = req.query.sort === 'Ascendente' ? 1 
     // : req.query.sort === 'Descendente' ? -1 
     // : null;
 
     //console.log(req.query.sort);
     let sort;
-    if(req.query.sort == 'Ascendente') sort=1;
-    if(req.query.sort == 'Descendente') sort=-1;
-    if(req.query.sort != 'Ascendente' && req.query.sort != 'Descendente') sort=null;
+    if (req.query.sort == 'Ascendente') sort = 1;
+    if (req.query.sort == 'Descendente') sort = -1;
+    if (req.query.sort != 'Ascendente' && req.query.sort != 'Descendente') sort = null;
 
     const query = req.query.query || null;
     //console.log("🚀 ~ router.get ~ query:", query)
 
     let queryObj = {}
-    if(query != undefined && query != 'null' ){
+    if (query != undefined && query != 'null') {
         queryObj.category = query;
     }
 
-    productService.getProducts(page, limit, queryObj, sort).then( result => {
+    productService.getProducts(page, limit, queryObj, sort).then(result => {
         //console.log("🚀 ~ productService.getProducts ~ result:", result)
-        
+
         res.render("products", {
             products: result.payload,
             prevLink: result.prevLink,
@@ -74,12 +72,10 @@ const viewProductsCtrl = (req, res) => {
             user: user,
             cart: user.cart
         })
-    }).catch( err => {
+    }).catch(err => {
         console.log("productService.getProducts ~ err:", err);
-        res.status(400).json({
-            status: 400,
-            message: err.message,
-        })
+        httpResponse.BadRequest(res, err.message);
+
     })
 };
 
@@ -88,17 +84,15 @@ const viewCartByIdCtrl = (req, res) => {
     const cid = req.params.cid;
     const user = req.session.user;
 
-    cartService.getCartById(cid).then( result => {
+    cartService.getCartById(cid).then(result => {
         res.render("cart", {
             products: result[0].products,
             user: user
         })
-    }).catch( err => {
+    }).catch(err => {
         console.log("🚀 ~ cartService.getCartById ~ err:", err);
-        res.status(400).json({
-            status: 400,
-            message: err.message,
-        })
+        httpResponse.BadRequest(res, err.message);
+
     })
 };
 
