@@ -17,8 +17,7 @@ class ProductServiceDao {
         return result;
     }
 
-    #checkProductData(product) {
-        const isNumber = x => typeof x === "number";
+    #checkOptionalProductData(product) {
         const isBool = x => typeof x === "boolean";
         const isString = x => typeof x === "string";
         const isStringsArray = arr => arr.every(isString);
@@ -31,14 +30,6 @@ class ProductServiceDao {
             product.thumbnails = ["sin imagen"];
         }
 
-        if (!isNumber(product.price)) {
-            return { valid: false, error: "El precio es requerido y debe ser un número." };
-        }
-
-        if (!isNumber(product.stock)) {
-            return { valid: false, error: "El stock es requerido y debe ser un número." };
-        }
-
         if (!isBool(product.status)) {
             return { valid: false, error: "El estado debe ser un booleano." };
         }
@@ -48,6 +39,36 @@ class ProductServiceDao {
         }
 
         return { valid: true };
+    }
+
+    #checkRequiredProductData(errors) {
+        let errorMessage = 'Producto no agregado. Datos erróneos: ';
+
+        for (let field in errors) {
+            switch (field) {
+                case 'title':
+                    errorMessage += 'El titulo es requerido y debe ser un String.';
+                    break;
+                case 'description':
+                    errorMessage += 'La descripción es requerida y debe ser un String.';
+                    break;
+                case 'price':
+                    errorMessage += 'El precio es requerido y debe ser un número.';
+                    break;
+                case 'code':
+                    errorMessage += 'El código es requerido y debe ser un String.';
+                    break;
+                case 'stock':
+                    errorMessage += 'El stock es requerido y debe ser un número.';
+                    break;
+                case 'category':
+                    errorMessage += 'La categoría es requerida y debe ser un String.';
+                    break;
+                default:
+                    errorMessage += `${field}: ${errors[field].message}. `;
+            }
+        }
+        return errorMessage;
     }
 
     async insertProducts() {
@@ -73,7 +94,7 @@ class ProductServiceDao {
             console.log("🚀 ~ ProductServiceDao ~ addProduct ~ product:", product);
 
             //Chequeo que los datos sean de tipo correcto
-            const validationResult = this.#checkProductData(product);
+            const validationResult = this.#checkOptionalProductData(product);
             if (!validationResult.valid) {
                 console.log({
                     error: `Producto no agregado. Datos erróneos: ${validationResult.error}
@@ -83,7 +104,10 @@ class ProductServiceDao {
                     - price: Number
                     - code: String
                     - stock: Number
-                    - category: String`
+                    - category: String
+                    Lista de propiedades opcionales:
+                    - status: Bool
+                    - thumbnails: Array de strings`
                 });
                 return { error: `Producto no agregado. Datos erróneos: ${validationResult.error}` };
             }
@@ -99,27 +123,7 @@ class ProductServiceDao {
             }
             if (error.name === 'ValidationError') {
                 const errors = error.errors;
-                let errorMessage = 'Producto no agregado. Datos erróneos: ';
-
-                for (let field in errors) {
-                    switch (field) {
-                        case 'title':
-                            errorMessage += 'El título es requerido y debe ser un String.';
-                            break;
-                        case 'description':
-                            errorMessage += 'La descripción es requerida y debe ser un String.';
-                            break;
-                        case 'code':
-                            errorMessage += 'El código es requerido y debe ser un String.';
-                            break;
-                        case 'category':
-                            errorMessage += 'La categoría es requerida y debe ser un String.';
-                            break;
-                        default:
-                            errorMessage += `${field}: ${errors[field].message}. `;
-                    }
-                }
-
+                const errorMessage = this.#checkRequiredProductData(errors);
                 throw new UniqueError(errorMessage.trim());
             }
             throw new Error(`No se puede agregar el producto\n ${error.message}`);
