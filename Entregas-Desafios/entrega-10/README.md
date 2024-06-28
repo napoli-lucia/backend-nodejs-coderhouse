@@ -29,3 +29,19 @@ Realizar una copia del archivo `.env template`, cambiandole el nombre a `.env`
 - `GITHUB_CLIENT_ID` = El ID del cliente de GitHub para autenticación OAuth. Ejemplo: `your_github_client_id`
 - `GITHUB_CLIENT_SECRET` = El secreto del cliente de GitHub para autenticación OAuth. Ejemplo: `your_github_client_secret`
 - `SECRET_JWT` = La clave secreta para la generación de tokens JWT. Ejemplo: `your_jwt_secret_key`
+
+## Comandos
+#### Para instalar las dependencias:
+```
+npm install
+```
+
+#### Para correr el proyecto:
+```
+npm run
+```
+
+#### Para correr las pruebas:
+```
+npm run test
+```
