@@ -17,6 +17,7 @@
 - [Entregable 8](./Entregas-Desafios/entrega-08/) 2da Integracion ecommerce
 - [Entregable 9](./Entregas-Desafios/entrega-09/) Reestructura de servidor
 - [Entregable 10](./Entregas-Desafios/entrega-10/) Mocking y manejo de errores
+- [Entregable 11](./Entregas-Desafios/entrega-11/) Implementación de logger
 
 ## Entregas proyecto
 
