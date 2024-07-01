@@ -1,0 +1,45 @@
+{"level":"error","message":"Peticion GET error Test error logger"}
+{"level":"error","message":"Peticion GET error Test error logger"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"data and hash arguments required"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"httpResponse is not defined"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"TIME_EXPIRE_JWT_SESSION is not defined"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"user is not defined"}
+{"level":"error","message":"No recipients defined"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"Autenticación fallida"}
+{"level":"error","message":"Autenticación fallida"}
+{"level":"error","message":"Token invalido o expiradotoken is not defined"}
+{"level":"error","message":"Token invalido o expiradotoken is not defined"}
+{"level":"error","message":"Token invalido o expiradotoken is not defined"}
+{"level":"error","message":"Token invalido o expirado: token is not defined"}
+{"level":"error","message":"Autenticación fallida"}
+{"level":"error","message":"Token invalido o expirado: changePswLink is not defined"}
+{"level":"error","message":"Token error: jwt must be provided"}
+{"level":"error","message":"usuario no registrado"}
+{"level":"error","message":"Token error: jwt must be provided"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"res.status is not a function"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"res.status is not a function"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"Token not provided"}
+{"level":"error","message":"Token error: jwt expired"}
+{"level":"error","message":"Token error: jwt expired"}
