@@ -14,20 +14,21 @@ class CartServiceDao {
         }
     }
 
-    async #checkCartAndProduct(cid, pid) {
+    async #checkCartAndProduct(cid, pid, userEmail) {
         //Chequeo si el carrito existe
         const cart = await this.getCartById(cid);
-        //console.log("Cart:", cart);
-        if (cart.error) {
-            return { error: "Cart not found" };
-        }
+        if (cart.error) return { error: "Cart not found" };
 
         //Chequeo si el producto existe en el ecommerce
-        const productAvailable = await productService.getProductById(pid);
-        //console.log("Product:", productAvailable);
-        if (productAvailable.error) {
-            return { error: "Product not available" };
-        }
+        const product = await productService.getProductById(pid);
+        if (product.error) return { error: "Product not available" };
+
+        if (userEmail === product[0].owner) {
+            return {
+                code: 401,
+                error: `No puede agregar el producto con id ${pid} porque usted es dueño de ese producto`
+            }
+        };
     }
 
     async addCart() {
@@ -52,9 +53,9 @@ class CartServiceDao {
         }
     }
 
-    async addProductToCart(cid, pid) {
+    async addProductToCart(cid, pid, userEmail) {
         try {
-            const checkResult = await this.#checkCartAndProduct(cid, pid);
+            const checkResult = await this.#checkCartAndProduct(cid, pid, userEmail);
             if (checkResult) return checkResult;
 
             //Chequeo si el producto ya esta o no en el carrito
@@ -163,13 +164,13 @@ class CartServiceDao {
             const cart = (await this.getCartById(user.cart))[0].products;
             // console.log("🚀 ~ CartServiceDao ~ buyCart ~ cart:", cart);
 
-            const {available, unavailable} = await this.#separateProducts(cart)
+            const { available, unavailable } = await this.#separateProducts(cart)
             // console.log("🚀 ~ CartServiceDao ~ buyCart ~ available:", available);
             // console.log("🚀 ~ CartServiceDao ~ buyCart ~ unavailable:", unavailable);
 
-            for (const item of available)  {
+            for (const item of available) {
                 const quantity = item.product.stock - item.quantity;
-                await productService.updateProduct(item.product._id,{"stock":quantity});
+                await productService.updateProduct(item.product._id, { "stock": quantity });
                 // console.log("🚀 ~ CartServiceDao ~ buyCart ~ item:", item);
                 // console.log("🚀 ~ CartServiceDao ~ buyCart ~ updated:", updated);
             };
@@ -180,7 +181,7 @@ class CartServiceDao {
             const purchaser = user.email;
             // console.log("🚀 ~ CartServiceDao ~ buyCart ~ purchaser:", purchaser);
 
-            const ticketDTO = new TicketDTO({amount,purchaser});
+            const ticketDTO = new TicketDTO({ amount, purchaser });
             const ticket = await ticketsModel.create(ticketDTO);
             console.log("🚀 ~ CartServiceDao ~ buyCart ~ ticket:", ticket);
 
@@ -217,20 +218,20 @@ class CartServiceDao {
     async #separateProducts(cart) {
         const availableProducts = [];
         const unavailableProducts = [];
-      
+
         cart.forEach(item => {
-          if (item.quantity <= item.product.stock) {
-            availableProducts.push(item);
-          } else {
-            unavailableProducts.push(item);
-          }
+            if (item.quantity <= item.product.stock) {
+                availableProducts.push(item);
+            } else {
+                unavailableProducts.push(item);
+            }
         });
-      
+
         return {
-          available: availableProducts,
-          unavailable: unavailableProducts
+            available: availableProducts,
+            unavailable: unavailableProducts
         };
-      }
+    }
 }
 
 export default CartServiceDao;

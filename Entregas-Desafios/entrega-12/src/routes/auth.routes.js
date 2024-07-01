@@ -9,7 +9,8 @@ import {
   githubCtrl,
   githubCallbackCtrl,
   currentCtrl,
-  sendChangePswMailCtrl
+  sendChangePswMailCtrl,
+  changeRoleCtrl
 } from "../controller/users.controller.js";
 
 const router = Router();
@@ -28,6 +29,9 @@ router.post("/changePsw", changePswCtrl);
 
 // SEND CHANGE PASSWORD MAIL
 router.post("/changePswMail", sendChangePswMailCtrl);
+
+// CHANGE ROLE
+router.post("/premium/:uid", changeRoleCtrl);
 
 // LOGIN GITHUB
 router.get(

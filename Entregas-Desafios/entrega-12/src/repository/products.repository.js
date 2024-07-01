@@ -5,12 +5,9 @@ export default class ProductRepositoryDao {
     this.dao = dao;
   }
 
-  insertProducts = async () => {
-    return this.dao.insertProducts();
-  }
-
-  insertMockingProducts = async (products) => {
-    return this.dao.insertMockingProducts(products);
+  insertProducts = async (products) => {
+    const productsDTO = products.map(product => new ProductDTO(product));
+    return this.dao.insertProducts(productsDTO);
   }
 
   getAllProducts = async () => {

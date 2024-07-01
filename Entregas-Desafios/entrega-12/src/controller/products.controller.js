@@ -1,3 +1,4 @@
+import productsData from "../data/products.init-data.js";
 import { UniqueError } from "../handle-errors/uniqueError.js"
 import { productService } from "../repository/index.js";
 import { generateProduct } from "../utils/generate-products.js";
@@ -7,7 +8,7 @@ const httpResponse = new HttpResponse();
 // INSERTION
 const insertProductsCtrl = async (req, res, next) => {
     try {
-        let result = await productService.insertProducts();
+        let result = await productService.insertProducts(productsData);
         return res.json({
             status: "success",
             message: "all the products were inserted succesfully",
@@ -27,9 +28,9 @@ const mockingProductsCtrl = async (req, res, next) => {
         for (let i = 0; i < MAX_products; i++) {
             products.push(generateProduct());
         };
-        req.logger.info(`Mocking Products: ${products}`);
+        req.logger.info(`Mocking Products: ${JSON.stringify(products)}`);
 
-        let result = await productService.insertMockingProducts(products);
+        let result = await productService.insertProducts(products);
         return res.json({
             status: "success",
             message: "all the mocking products were inserted succesfully",
@@ -103,12 +104,24 @@ const getProductByIdCtrl = async (req, res, next) => {
 // DELETE product by id
 const deleteProductByIdCtrl = async (req, res, next) => {
     try {
-        req.logger.info(`Delete product with id ${req.params.pid}`);
-        const result = await productService.deleteProduct(req.params.pid);
+        const pid = req.params.pid;
+        req.logger.info(`Delete product with id ${pid}`);
+        
+        const userEmail = req.session.user.email;
+        req.logger.info(`User email: ${userEmail}`);
 
-        if (result.error) return httpResponse.NotFound(res, result.error);
+        const product = await productService.getProductById(pid);
+        if (product.error) return httpResponse.NotFound(res, product.error);
 
-        return httpResponse.OK(res, result.message);
+        if(userEmail === product[0].owner || userEmail === "adminCoder@coder.com"){
+            const resultDelete = await productService.deleteProduct(pid);
+    
+            if (resultDelete.error) return httpResponse.NotFound(res, resultDelete.error);
+    
+            return httpResponse.OK(res, resultDelete.message);
+        }
+        return httpResponse.Unauthorized(res, `No puede eliminar el producto con id ${pid} porque no es dueño`);
+        
 
     } catch (error) {
         req.logger.error(`${error.message}`);
@@ -119,7 +132,17 @@ const deleteProductByIdCtrl = async (req, res, next) => {
 // POST product
 const addProductCtrl = async (req, res, next) => {
     try {
-        const result = await productService.addProduct(req.body);
+        let newProduct;
+
+        if(req.session.user.role === 'PREMIUM'){
+            const userEmail = req.session.user.email;
+            req.logger.info(`User email: ${userEmail}`);
+            newProduct = {...req.body, owner: userEmail}
+        }
+        else{
+            newProduct = req.body;
+        }
+        const result = await productService.addProduct(newProduct);
         if (result.error) return httpResponse.BadRequest(res, result.error);
 
         return httpResponse.OK(res, result.message);
@@ -136,12 +159,22 @@ const addProductCtrl = async (req, res, next) => {
 // PUT product by id
 const updateProductByIdCtrl = async (req, res, next) => {
     try {
-        req.logger.info(`Edit product with id ${req.params.pid}`);
+        const pid = req.params.pid;
+        req.logger.info(`Edit product with id ${pid}`);
+        
+        const userEmail = req.session.user.email;
+        req.logger.info(`User email: ${userEmail}`);
 
-        const result = await productService.updateProduct(req.params.pid, req.body);
-        if (result.error) return httpResponse.NotFound(res, result.error);
+        const product = await productService.getProductById(pid);
+        if (product.error) return httpResponse.NotFound(res, product.error);
 
-        return httpResponse.OK(res, result.message);
+        if(userEmail === product[0].owner || userEmail === "adminCoder@coder.com"){
+            const resultUpdate = await productService.updateProduct(pid, req.body);
+            if (resultUpdate.error) return httpResponse.NotFound(res, resultUpdate.error);
+    
+            return httpResponse.OK(res, resultUpdate.message);
+        }
+        return httpResponse.Unauthorized(res, `No puede editar el producto con id ${pid} porque no es dueño`);
 
     } catch (error) {
         req.logger.error(`${error.message}`);

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { generateJWT,SECRET_JWT } from "../utils/jwt.js";
+import { generateJWT, SECRET_JWT } from "../utils/jwt.js";
 import { userService } from "../repository/index.js";
 import { transporter } from "../utils/email.js";
 import { TIME_EXPIRE_JWT_SESSION, TIME_EXPIRE_JWT_CHANGE_PSW, GOOGLE_EMAIL } from "../config/config.js"
@@ -100,7 +100,6 @@ const changePswCtrl = async (req, res, next) => {
     }
 
     const { new_password } = req.body;
-    req.logger.info(`New password received: ${new_password}`);
 
     // const session = req.session;
     // req.logger.info(`Session: ${JSON.stringify(session)}`);
@@ -178,6 +177,32 @@ const sendChangePswMailCtrl = async (req, res, next) => {
   }
 };
 
+// CHANGE ROLE
+const changeRoleCtrl = async (req, res, next) => {
+  try {
+    const uid = req.params.uid;
+    req.logger.info(`Id usuario: ${uid}`);
+    const role = req.body.role;
+    req.logger.info(`Rol usuario: ${role}`);
+    if (role != "USER" && role != "PREMIUM" ) return httpResponse.BadRequest(res, "rol no permitido");
+  
+    //Cambio de rol
+    const foundUser = await userService.changeRole(uid, role);
+    if (foundUser.error) {
+      return res.status(foundUser.code).json({
+        status: foundUser.code,
+        message: foundUser.error,
+      });
+    };
+  
+    return res.send({ ok: true, message: foundUser.message });
+    
+  } catch (error) {
+    req.logger.error(`${error.message}`);
+    next(error);
+  }
+}
+
 
 // LOGIN GITHUB
 const githubCtrl = async (req, res) => { };
@@ -207,5 +232,6 @@ export {
   githubCtrl,
   githubCallbackCtrl,
   currentCtrl,
-  sendChangePswMailCtrl
+  sendChangePswMailCtrl,
+  changeRoleCtrl
 };

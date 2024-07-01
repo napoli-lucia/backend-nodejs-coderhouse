@@ -1,21 +1,7 @@
 import productsModel from "../models/products.model.js";
-import productsData from "../../data/products.init-data.js";
 import { UniqueError } from "../../handle-errors/uniqueError.js"
 
 class ProductServiceDao {
-
-    #obligatoryProperties(props) {
-        const obligatoryProps = ['title', 'description', 'price', 'code', 'stock', 'category'];
-
-        let result = true;
-        obligatoryProps.forEach(prop => {
-            if (!props.includes(prop)) {
-                console.log(`No incluye la propiedad ${prop}`);
-                result = false;
-            }
-        });
-        return result;
-    }
 
     #checkOptionalProductData(product) {
         const isBool = x => typeof x === "boolean";
@@ -71,18 +57,9 @@ class ProductServiceDao {
         return errorMessage;
     }
 
-    async insertProducts() {
+    async insertProducts(productsData) {
         try {
             let result = await productsModel.insertMany(productsData);
-            return result;
-        } catch (error) {
-            throw new Error(`No se pueden insertar los productos\n ${error.message}`);
-        }
-    }
-
-    async insertMockingProducts(products) {
-        try {
-            let result = await productsModel.insertMany(products);
             return result;
         } catch (error) {
             throw new Error(`No se pueden insertar los productos\n ${error.message}`);

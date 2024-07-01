@@ -1,4 +1,6 @@
 import { cartService } from "../repository/index.js";
+import { HttpResponse } from "../middleware/error-handle.js";
+const httpResponse = new HttpResponse();
 
 // Crea un nuevo carrito
 const addCartCtrl = async (req, res, next) => {
@@ -33,7 +35,9 @@ const getCartByIdCtrl = async (req, res, next) => {
 // Agregar el producto al carrito seleccionado
 const addProductToCartCtrl = async (req, res, next) => {
     try {
-        const result = await cartService.addProductToCart(req.params.cid, req.params.pid);
+        const userEmail = req.session.user.email;
+        const result = await cartService.addProductToCart(req.params.cid, req.params.pid, userEmail);
+        if (result.code) return httpResponse.Unauthorized(res, result.error);
         if (result.error) return httpResponse.NotFound(res, result.error);
 
         return res.send(result);

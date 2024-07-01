@@ -11,7 +11,6 @@ class UserServiceDao {
             }
 
             const findUser = await usersModel.findOne({ email });
-
             if (!findUser) return { error: `usuario no registrado`, code: 400 };
 
             const isValidComparePsw = await isValidPasswd(password, findUser.password);
@@ -84,6 +83,22 @@ class UserServiceDao {
         } catch (error) {
             throw new Error(`No se pueden obtene al usuario\n ${error.message}`);
         }
+    }
+
+    async changeRole(uid, new_role) {
+        const findUser = await usersModel.findOne({ _id: uid });
+
+        if (!findUser) return { error: `No existe ese usuario`, code: 404 };
+
+        const updateUser = await usersModel.findByIdAndUpdate(
+            findUser._id, { role: new_role });
+
+        if (!updateUser) {
+            return { error: "problemas actualizando el rol", code: 404 };
+        }
+
+        return { message: `Rol actualizado!` }
+
     }
 }
 

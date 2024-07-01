@@ -29,12 +29,12 @@ router.get(`/`, authMdw(["PUBLIC"]), getProductsCtrl);
 router.get(`/:pid`, authMdw(["PUBLIC"]), idErrors, getProductByIdCtrl);
 
 // DELETE /api/products/:pid
-router.delete(`/:pid`, authMdw(["ADMIN"]), idErrors, deleteProductByIdCtrl);
+router.delete(`/:pid`, authMdw(["ADMIN","PREMIUM"]), idErrors, deleteProductByIdCtrl);
 
 // POST /api/products/
-router.post(`/`, authMdw(["ADMIN"]), addProductCtrl);
+router.post(`/`, authMdw(["ADMIN","PREMIUM"]), addProductCtrl);
 
 // PUT /api/products/:pid
-router.put(`/:pid`, authMdw(["ADMIN"]), idErrors, updateProductByIdCtrl);
+router.put(`/:pid`, authMdw(["ADMIN","PREMIUM"]), idErrors, updateProductByIdCtrl);
 
 export default router;

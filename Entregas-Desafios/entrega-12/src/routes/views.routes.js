@@ -18,7 +18,7 @@ const router = Router();
 router.get("/", viewHomeProductsCtrl);
 
 //** Vista de todos los productos EN TIEMPO REAL**/
-router.get("/realTimeProducts", viewRealTimeProductsCtrl);
+router.get("/realTimeProducts", authMdw(["ADMIN","PREMIUM"]), viewRealTimeProductsCtrl);
 
 //** Vista del chat **/
 router.get("/chat", authMdw(["USER"]), viewChatCtrl);

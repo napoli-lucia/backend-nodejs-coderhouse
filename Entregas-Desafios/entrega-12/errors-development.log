@@ -43,3 +43,22 @@
 {"level":"error","message":"Token not provided"}
 {"level":"error","message":"Token error: jwt expired"}
 {"level":"error","message":"Token error: jwt expired"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'products')"}
+{"level":"error","message":"No se pueden insertar los productos\n products validation failed: code: Path `code` is required."}
+{"level":"error","message":"No se pueden insertar los productos\n E11000 duplicate key error collection: ecommerce.products index: code_1 dup key: { code: null }"}
+{"level":"error","message":"products is not defined"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'cart')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'cart')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'getProductById')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'getProductByIdCtrl')"}
+{"level":"error","message":"result is not defined"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'getProductByIdCtrl')"}
+{"level":"error","message":"No se puede actualizar el producto con id 6682fe4fe2c784a16aeb2558\n Invalid atomic update value for $set. Expected an object, received undefined"}
+{"level":"error","message":"httpResponse is not defined"}
+{"level":"error","message":"No se puede agregar el producto al carrito\n userEmail is not defined"}
+{"level":"error","message":"No se puede agregar el producto al carrito\n product is not defined"}
+{"level":"error","message":"result is not defined"}
+{"level":"error","message":"result is not defined"}
+{"level":"error","message":"No se puede agregar el producto al carrito\n checkResult is not defined"}
+{"level":"error","message":"Product id error"}
+{"level":"error","message":"userService.changeRole is not a function"}

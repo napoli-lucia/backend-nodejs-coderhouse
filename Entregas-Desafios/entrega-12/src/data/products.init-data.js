@@ -2,11 +2,10 @@ const products = [
     {
         "title": "Harina",
         "description": "Harina 000",
-        "price": 25,
+        "price": 125,
         "thumbnails": [
             "./images/harina000.jpg"
         ],
-        "code": "ABC001",
         "status": true,
         "stock": 15,
         "category": "Harinas"
@@ -14,11 +13,10 @@ const products = [
     {
         "title": "Leche",
         "description": "Leche deslactosada",
-        "price": 30,
+        "price": 130,
         "thumbnails": [
             "./images/leche-deslactosada.jpg"
         ],
-        "code": "ABC002",
         "status": true,
         "stock": 10,
         "category": "Lacteos"
@@ -26,11 +24,10 @@ const products = [
     {
         "title": "Gaseosa",
         "description": "Coca-Cola",
-        "price": 15,
+        "price": 115,
         "thumbnails": [
             "./images/coca-cola.jpg"
         ],
-        "code": "ABC003",
         "status": true,
         "stock": 10,
         "category": "Bebidas"
@@ -38,11 +35,7 @@ const products = [
     {
         "title": "Queso",
         "description": "Queso provolone",
-        "price": 45,
-        "thumbnails": [
-            "./images/queso-provolone.jpg"
-        ],
-        "code": "ABC004",
+        "price": 4045,
         "status": true,
         "stock": 12,
         "category": "Lacteos"
@@ -50,11 +43,10 @@ const products = [
     {
         "title": "Agua",
         "description": "Agua sin gas",
-        "price": 14,
+        "price": 114,
         "thumbnails": [
             "./images/agua-sin-gas.jpg"
         ],
-        "code": "ABC005",
         "status": true,
         "stock": 11,
         "category": "Bebidas"
@@ -62,11 +54,10 @@ const products = [
     {
         "title": "Harina",
         "description": "Harina Leudante",
-        "price": 20,
+        "price": 120,
         "thumbnails": [
             "./images/harina-leudante.jpg"
         ],
-        "code": "ABC006",
         "status": true,
         "stock": 24,
         "category": "Harinas"
@@ -74,11 +65,10 @@ const products = [
     {
         "title": "Queso",
         "description": "Queso roquefort",
-        "price": 40,
+        "price": 140,
         "thumbnails": [
             ""
         ],
-        "code": "ABC007",
         "status": true,
         "stock": 25,
         "category": "Lacteos"
@@ -86,26 +76,83 @@ const products = [
     {
         "title": "Queso",
         "description": "Queso crema",
-        "price": 45,
+        "price": 145,
         "thumbnails": [
             "./images/queso-crema.jpg"
         ],
-        "code": "ABC008",
         "status": true,
         "stock": 25,
         "category": "Lacteos"
     },
     {
-        "title": "Queso",
-        "description": "Queso roquefort",
-        "price": 45,
-        "thumbnails": [
-            "imagen001.jpg"
-        ],
-        "code": "ABC009",
-        "status": false,
-        "stock": 25,
+        "title": "Arroz",
+        "description": "Grano básico para cocinar",
+        "price": 200,
+        "stock": 100,
+        "category": "Granos"
+    },
+    {
+        "title": "Leche",
+        "description": "Lácteo rico en calcio",
+        "price": 600,
+        "stock": 50,
         "category": "Lacteos"
+    },
+    {
+        "title": "Pan",
+        "description": "Alimento hecho de harina",
+        "price": 1000,
+        "stock": 75,
+        "category": "Panadería"
+    },
+    {
+        "title": "Huevos",
+        "description": "Huevos de granja",
+        "price": 279,
+        "stock": 30,
+        "category": "Granja"
+    },
+    {
+        "title": "Azúcar",
+        "description": "Endulzante común",
+        "price": 150,
+        "stock": 60,
+        "category": "Endulzantes"
+    },
+    {
+        "title": "Aceite",
+        "description": "Aceite de giraol para cocinar",
+        "price": 1300,
+        "stock": 20,
+        "category": "Aceites"
+    },
+    {
+        "title": "Sal",
+        "description": "Condimento básico",
+        "price": 50,
+        "stock": 80,
+        "category": "Condimentos"
+    },
+    {
+        "title": "Fideos Tallarines",
+        "description": "Tallarines Don Vicente",
+        "price": 600,
+        "stock": 40,
+        "category": "Pastas"
+    },
+    {
+        "title": "Salsa de tomate",
+        "description": "Salsa para acompañar pastas",
+        "price": 250,
+        "stock": 55,
+        "category": "Salsas"
+    },
+    {
+        "title": "Atún",
+        "description": "Pescado enlatado",
+        "price": 2500,
+        "stock": 25,
+        "category": "Enlatados"
     }
 ]
 
