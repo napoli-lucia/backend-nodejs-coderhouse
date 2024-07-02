@@ -20,6 +20,7 @@ import authRoutes from "./routes/auth.routes.js"
 import loggerRoutes from "./routes/loggers.routes.js"
 import socketProducts from "./listeners/socketProducts.js";
 import socketChat from "./listeners/socketChat.js";
+import socketUsers from "./listeners/socketUsers.js";
 import initializePassport from "./config/passport.config.js";
 import {PORT,API_PREFIX,DB_NAME,MONGO_URI,SECRET_SESSION} from "./config/config.js"
 import { dynamicLogger } from "./utils/logger.js";
@@ -120,3 +121,4 @@ app.use(serverErrors);
 
 socketProducts(io);
 socketChat(io);
+socketUsers(io);

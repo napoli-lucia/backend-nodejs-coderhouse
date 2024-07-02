@@ -24,17 +24,16 @@ function updateProductsList(productList) {
                 <li>Codigo: ${product.code}</li>
                 <li>Stock: ${product.stock}</li>
                 <li>Categoria: ${product.category}</li>
+                <li>Owner: $${product.owner}</li>
                 <li>Precio: $${product.price}</li>
             </ul>
             </div>
         </div>
         </div>`;
     });
-  
+
     realProducts.innerHTML = productsHTML;
-
 }
-
 
 //Obtener datos nuevo producto
 const form = document.getElementById("create-product");
@@ -45,7 +44,6 @@ form.addEventListener("submit", async (e) => {
     let title = form.elements.title.value;
     let description = form.elements.description.value;
     let price = Number(form.elements.price.value);
-    let code = form.elements.code.value;
     let status = form.elements.status.checked; //Obtener valor checkbox
     let stock = Number(form.elements.stock.value);
     let category = form.elements.category.value;
@@ -54,21 +52,26 @@ form.addEventListener("submit", async (e) => {
         title,
         description,
         price,
-        code,
         status,
         stock,
         category,
     })
 
     form.reset();
-  })
+})
 
 
 //Obtener id de producto a eliminar
 document.getElementById("send-delete").addEventListener("click", function () {
     const deleteIdInput = document.getElementById("product-id");
     console.log("🚀 ~ deleteIdInput:", deleteIdInput)
-    //const pid = Number(deleteIdInput.value);
-    socket.emit("delete-prod", deleteIdInput);
+    const pid = deleteIdInput.value;
+    socket.emit("delete-prod", pid);
     deleteIdInput.value = "";
-  })
+})
+
+//Alerta error
+socket.on("error", (error) => {
+    console.error("Error received from server:", error);
+    alert(error.error);
+});

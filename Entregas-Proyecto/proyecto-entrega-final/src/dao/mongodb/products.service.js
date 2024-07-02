@@ -177,6 +177,7 @@ class ProductServiceDao {
     }
 
     async deleteProduct(pid) {
+        console.log("🚀 ~ ProductServiceDao ~ deleteProduct ~ pid:", pid);
         try {
             const result = await productsModel.deleteOne({ "_id": pid });
             console.log("ProductServiceDao ~ deleteProduct ~ result:", result)

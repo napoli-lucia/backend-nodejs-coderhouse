@@ -22,8 +22,10 @@ export default class UserRepositoryDao {
     return this.dao.checkUser(email);
   }
 
-  changeRole = async (uid, new_role) => {
-    return this.dao.changeRole(uid, new_role);
+  changeRole = async (email, new_role) => {
+    // return this.dao.changeRole(uid, new_role);
+    return this.dao.changeRole(email, new_role);
+
   }
 
   getAllUsers = async () => {

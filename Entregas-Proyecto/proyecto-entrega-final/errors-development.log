@@ -81,3 +81,11 @@
 {"level":"error","message":"No se pueden obtene al usuario\n pid is not defined"}
 {"level":"error","message":"Not found"}
 {"level":"error","message":"Not found"}
+{"level":"error","message":"Not found"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'cart')"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'cart')"}
+{"level":"error","message":"No se puede registar al usuario\n E11000 duplicate key error collection: ecommerce.users index: email_1 dup key: { email: \"monica@mail.com\" }"}
+{"level":"error","message":"No se puede registar al usuario\n E11000 duplicate key error collection: ecommerce.users index: email_1 dup key: { email: \"monica@mail.com\" }"}
+{"level":"error","message":"No se puede registar al usuario\n E11000 duplicate key error collection: ecommerce.users index: email_1 dup key: { email: \"prueba@mail.com\" }"}
+{"level":"error","message":"GOOGLE_EMAIL is not defined"}
+{"level":"error","message":"transporter is not defined"}

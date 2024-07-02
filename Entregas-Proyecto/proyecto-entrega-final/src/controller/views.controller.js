@@ -1,5 +1,4 @@
-import { productService } from "../repository/index.js";
-import { cartService } from "../repository/index.js";
+import { productService, userService, cartService } from "../repository/index.js";
 import { HttpResponse } from "../middleware/error-handle.js";
 
 const httpResponse = new HttpResponse();
@@ -125,7 +124,12 @@ const viewSendMailChangePswCtrl = async (req, res) => {
 
 //** Vista admin **/
 const viewJustAdminCtrl = async (req, res) => {
-    res.render("justAdmin");
+    userService.getAllUsers().then(result => {
+        res.render("justAdmin", { users: result })
+    }).catch(err => {
+        req.logger.error(`${err.message}`);
+        httpResponse.BadRequest(res, err.message);
+    })
 };
 
 export {

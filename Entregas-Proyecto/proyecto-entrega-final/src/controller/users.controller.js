@@ -56,6 +56,15 @@ const loginCtrl = async (req, res, next) => {
     const token = await generateJWT(user, TIME_EXPIRE_JWT_SESSION);
     req.logger.info(`Token: ${token}`);
 
+    if(user.email === "adminCoder@coder.com"){
+      return res
+      .cookie("cookieToken", token, {
+        maxAge: 30 * 60 * 1000,
+        httpOnly: true
+      })
+      .redirect("/realTimeProducts");
+    }
+
     return res
       .cookie("cookieToken", token, {
         maxAge: 30 * 60 * 1000,
@@ -185,14 +194,16 @@ const sendChangePswMailCtrl = async (req, res, next) => {
 // CHANGE ROLE
 const changeRoleCtrl = async (req, res, next) => {
   try {
-    const uid = req.params.uid;
-    req.logger.info(`Id usuario: ${uid}`);
+    // const uid = req.params.uid;
+    // req.logger.info(`Id usuario: ${uid}`);
+    const email = req.params.email;
+    req.logger.info(`Email usuario: ${email}`);
     const role = req.body.role;
     req.logger.info(`Rol usuario: ${role}`);
     if (role != "USER" && role != "PREMIUM") return httpResponse.BadRequest(res, "rol no permitido");
 
     //Cambio de rol
-    const foundUser = await userService.changeRole(uid, role);
+    const foundUser = await userService.changeRole(email, role);
     if (foundUser.error) {
       return res.status(foundUser.code).json({
         status: foundUser.code,
@@ -264,8 +275,33 @@ const deleteOneUserCtrl = async (req, res) => {
 const deleteOldUsersCtrl = async (req, res) => {
   try {
     const result = await userService.deleteOldUsers();
-    console.log("🚀 ~ deleteOldUsersCtrl ~ result:", result);
-    return httpResponse.OK(res, "Se eliminaron los usuarios que no se conectaron en los últimos 2 días");
+
+    const deletedUsers = result.data;
+
+    for (const emailReceiver of deletedUsers) {
+      let resultEmail = await transporter.sendMail({
+        from: GOOGLE_EMAIL,
+        to: emailReceiver,
+        subject: `Se ha eliminado su cuenta en el ecommerce`,
+        html: `
+        <div>
+          <h1>Se ha eliminado su cuenta</h1>
+          Usted se registró en el ecommerce con el email: ${emailReceiver}.
+          Se ha eliminado su cuenta por inactividad.
+
+          Esperamos que vuelva pronto!.
+        </div>
+        `
+      });
+      if (resultEmail.rejected.length != 0) {
+        req.logger.error(`El email no se pudo enviar`);
+        return httpResponse.BadRequest(res, `El email no se pudo enviar`);
+      };
+      
+    };
+
+
+    return httpResponse.OK(res, result.message, result.data);
 
   } catch (error) {
     req.logger.error(`${error.message}`);

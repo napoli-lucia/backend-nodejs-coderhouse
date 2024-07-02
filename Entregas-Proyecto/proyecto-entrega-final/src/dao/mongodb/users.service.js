@@ -27,6 +27,10 @@ class UserServiceDao {
     async addUser(user) {
         try {
             const { first_name, last_name, email, age, password } = user;
+
+            const userExists = await this.checkUser(email);
+            if(!userExists.error) return { error: `usuario ya registrado` }
+
             const pswHashed = await createHash(password);
 
             const newCart = await cartService.addCart();
@@ -84,8 +88,9 @@ class UserServiceDao {
         }
     }
 
-    async changeRole(uid, new_role) {
-        const findUser = await usersModel.findOne({ _id: uid });
+    async changeRole(email, new_role) {
+        //const findUser = await usersModel.findOne({ _id: uid });
+        const findUser = await usersModel.findOne({ email });
 
         if (!findUser) return { error: `No existe ese usuario`, code: 404 };
 
@@ -102,7 +107,7 @@ class UserServiceDao {
 
     async getAllUsers() {
         try {
-            return await usersModel.find({}).select({ 
+            return await usersModel.find({}).select({
                 "first_name": 1,
                 "last_name": 1,
                 "email": 1,
@@ -129,17 +134,37 @@ class UserServiceDao {
 
     async deleteOldUsers() {
         try {
-            const twoDaysAgo = new Date();
-            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-            
+            // const twoDaysAgo = new Date();
+            // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+            //Pruebas 5 minutos
+            const fiveMinutesAgo = new Date();
+            fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+
+            const checkUsers = await usersModel.find({
+                $or: [
+                    { last_connection: { $lt: fiveMinutesAgo } }, //Usuarios con conexion hace mas de dos dias
+                    { last_connection: { $exists: false } }   //Usuarios que nunca se conectaron
+                ]
+            }).select({
+                "email": 1,
+                "_id": 0,
+                "cart": 0
+            });
+            let deletedUsers = checkUsers.map(user => user.email);
+
             const result = await usersModel.deleteMany({
                 $or: [
-                    { last_connection: { $lt: twoDaysAgo } }, //Usuarios con conexion hace mas de dos dias
+                    { last_connection: { $lt: fiveMinutesAgo } }, //Usuarios con conexion hace mas de dos dias
                     { last_connection: { $exists: false } }   //Usuarios que nunca se conectaron
                 ]
             });
-            //console.log("🚀 ~ UserServiceDao ~ deleteUser ~ result:", result);
-            return result;
+            
+            return result.deletedCount === 0 
+            ? { message: "No se eliminó ningun usuario" } 
+            : { message: "Se eliminaron los usuarios que no se conectaron en los últimos 2 días",
+                data: deletedUsers
+            };
 
         } catch (error) {
             throw new Error(`No se pueden obtene al usuario\n ${error.message}`);

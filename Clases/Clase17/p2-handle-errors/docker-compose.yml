@@ -10,7 +10,7 @@ services:
     volumes:
       - apierros:/data/configdb
       - apierros:/data/db
-    restart: always
+    # restart: always
 
 networks:
   nodejs-network:

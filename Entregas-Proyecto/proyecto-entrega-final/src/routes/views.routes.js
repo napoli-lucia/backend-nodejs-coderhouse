@@ -25,7 +25,7 @@ router.get("/realTimeProducts", authMdw(["ADMIN","PREMIUM"]), viewRealTimeProduc
 router.get("/chat", authMdw(["USER"]), viewChatCtrl);
 
 //** Vista de productos con paginacion y boton para agregar a carrito **/
-router.get("/products", viewProductsCtrl);
+router.get("/products", authMdw(["USER","PREMIUM"]), viewProductsCtrl);
 
 //** Vista de un carrito **/
 router.get("/carts/:cid", viewCartByIdCtrl);
@@ -60,6 +60,8 @@ router.get("/failregister", async (req, res) => {
 
 // Login - GET
 router.get("/login", async (req, res) => {
+  const user = req.session.user;
+  console.log("🚀 ~ router.get ~ user:", user);
   res.render("login");
 });
 
@@ -88,7 +90,6 @@ router.get("/changePsw", viewChangePswCtrl);
 
 //** Vista mandar mail para cambiar contraseña **/
 router.get("/changePswMail", viewSendMailChangePswCtrl);
-
 
 //** Vista solo para el admin **/
 router.get("/justAdmin", authMdw(["ADMIN"]), viewJustAdminCtrl);

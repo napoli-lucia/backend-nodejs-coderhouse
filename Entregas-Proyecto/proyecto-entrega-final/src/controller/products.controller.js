@@ -2,6 +2,8 @@ import productsData from "../data/products.init-data.js";
 import { UniqueError } from "../handle-errors/uniqueError.js"
 import { productService } from "../repository/index.js";
 import { generateProduct } from "../utils/generate-products.js";
+import {GOOGLE_EMAIL} from "../config/config.js"
+import { transporter } from "../utils/email.js";
 import { HttpResponse } from "../middleware/error-handle.js";
 const httpResponse = new HttpResponse();
 
@@ -106,22 +108,47 @@ const deleteProductByIdCtrl = async (req, res, next) => {
     try {
         const pid = req.params.pid;
         req.logger.info(`Delete product with id ${pid}`);
-        
+
         const userEmail = req.session.user.email;
         req.logger.info(`User email: ${userEmail}`);
 
         const product = await productService.getProductById(pid);
         if (product.error) return httpResponse.NotFound(res, product.error);
+        const productOwner = product[0].owner;
 
-        if(userEmail === product[0].owner || userEmail === "adminCoder@coder.com"){
+        const message = {
+            from: GOOGLE_EMAIL,
+            to: productOwner,
+            subject: `Se ha eliminado un producto del que sos dueño en el ecommerce`,
+            html: `
+            <div>
+              <h1>Se ha eliminado su producto</h1>
+              <p>
+              Usted había creado un producto en el ecommerce.
+              Le avisamos que se ha eliminado por parte del administrador.
+    
+              Saludos!
+              </p>
+            </div>
+            `
+        };
+        
+        if (userEmail === productOwner || userEmail === "adminCoder@coder.com") {
             const resultDelete = await productService.deleteProduct(pid);
-    
+            
             if (resultDelete.error) return httpResponse.NotFound(res, resultDelete.error);
+            
+            let resultEmail = await transporter.sendMail(message);
     
+            if (resultEmail.rejected.length != 0) {
+                req.logger.error(`El email no se pudo enviar`);
+                return httpResponse.BadRequest(res, `El email no se pudo enviar`);
+            };
+
             return httpResponse.OK(res, resultDelete.message);
         }
         return httpResponse.Unauthorized(res, `No puede eliminar el producto con id ${pid} porque no es dueño`);
-        
+
 
     } catch (error) {
         req.logger.error(`${error.message}`);
@@ -134,12 +161,12 @@ const addProductCtrl = async (req, res, next) => {
     try {
         let newProduct;
 
-        if(req.session.user.role === 'PREMIUM'){
+        if (req.session.user.role === 'PREMIUM') {
             const userEmail = req.session.user.email;
             req.logger.info(`User email: ${userEmail}`);
-            newProduct = {...req.body, owner: userEmail}
+            newProduct = { ...req.body, owner: userEmail }
         }
-        else{
+        else {
             newProduct = req.body;
         }
         const result = await productService.addProduct(newProduct);
@@ -161,17 +188,17 @@ const updateProductByIdCtrl = async (req, res, next) => {
     try {
         const pid = req.params.pid;
         req.logger.info(`Edit product with id ${pid}`);
-        
+
         const userEmail = req.session.user.email;
         req.logger.info(`User email: ${userEmail}`);
 
         const product = await productService.getProductById(pid);
         if (product.error) return httpResponse.NotFound(res, product.error);
 
-        if(userEmail === product[0].owner || userEmail === "adminCoder@coder.com"){
+        if (userEmail === product[0].owner || userEmail === "adminCoder@coder.com") {
             const resultUpdate = await productService.updateProduct(pid, req.body);
             if (resultUpdate.error) return httpResponse.NotFound(res, resultUpdate.error);
-    
+
             return httpResponse.OK(res, resultUpdate.message);
         }
         return httpResponse.Unauthorized(res, `No puede editar el producto con id ${pid} porque no es dueño`);

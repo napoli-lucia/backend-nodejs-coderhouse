@@ -34,9 +34,6 @@ router.post("/changePsw", changePswCtrl);
 // SEND CHANGE PASSWORD MAIL
 router.post("/changePswMail", sendChangePswMailCtrl);
 
-// CHANGE ROLE
-router.post("/premium/:uid", changeRoleCtrl);
-
 // LOGIN GITHUB
 router.get(
   "/github",
@@ -61,5 +58,10 @@ router.delete("/:email", authMdw(["ADMIN"]), deleteOneUserCtrl);
 
 // DELETE OLD USERS
 router.delete("/", authMdw(["ADMIN"]), deleteOldUsersCtrl);
+
+// CHANGE ROLE
+// router.post("/premium/:uid", changeRoleCtrl);
+router.post("/:email", authMdw(["ADMIN"]), changeRoleCtrl);
+
 
 export default router;
