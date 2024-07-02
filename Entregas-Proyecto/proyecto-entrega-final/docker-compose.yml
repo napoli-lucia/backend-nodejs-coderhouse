@@ -4,12 +4,12 @@ version: "3.0"
 services:
   mongo_db: # name of BD service
     image: mongo
-    container_name: mongo_entrega15
+    container_name: mongo_entrega_final
     ports:
       - 27017:27017
     volumes:
-      - entrega15:/data/configdb
-      - entrega15:/data/db
+      - entrega_final:/data/configdb
+      - entrega_final:/data/db
     restart: always
 
 networks:
@@ -18,4 +18,4 @@ networks:
     driver: bridge
 
 volumes:
-  entrega15:
+  entrega_final:

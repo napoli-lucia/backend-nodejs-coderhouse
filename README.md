@@ -19,9 +19,11 @@
 - [Entregable 10](./Entregas-Desafios/entrega-10/) Mocking y manejo de errores
 - [Entregable 11](./Entregas-Desafios/entrega-11/) Implementación de logger
 - [Entregable 12](./Entregas-Desafios/entrega-12/) 3ra Integracion ecommerce
+- [Entregable 15](./Entregas-Desafios/entrega-15/) 4ta Integracion ecommerce
 
 ## Entregas proyecto
 
 - [Primera entrega](./Entregas-Proyecto/proyecto-01/)
 - [Segunda entrega](./Entregas-Proyecto/proyecto-02/)
 - [Tercera entrega](./Entregas-Proyecto/proyecto-03/)
+- [Entrega Final](./Entregas-Proyecto/proyecto-entrega-final/)
