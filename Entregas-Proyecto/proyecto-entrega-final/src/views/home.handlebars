@@ -1,22 +1,26 @@
-<title>Home</title>
+<title>Supermarket: Home</title>
 
-<h1>Productos</h1>
+<h1 class="thirteen">Supermarket</h1>
+
+<h2>Productos</h2>
+
 
 {{#each products}}
 <div class="container">
   <div class="producto">
       <img src={{this.thumbnails.[0]}} alt="Producto {{this.title}}" onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
     <div class="info">
-      <ul>
-        <li>ID: {{this._id}}</li>
-        <li>Titulo: {{this.title}}</li>
-        <li>Descripcion: {{this.description}}</li>
-        <li>Codigo: {{this.code}}</li>
-        <li>Stock: {{this.stock}}</li>
-        <li>Categoria: {{this.category}}</li>
-        <li>Precio: ${{this.price}}</li>
+      <ul class="product-list">
+        <li><b>ID:</b> {{this._id}}</li>
+        <li><b>Titulo:</b> {{this.title}}</li>
+        <li><b>Descripcion:</b> {{this.description}}</li>
+        <li><b>Codigo:</b> {{this.code}}</li>
+        <li><b>Stock:</b> {{this.stock}}</li>
+        <li><b>Categoria:</b> {{this.category}}</li>
+        <li class="price"><b>Precio:</b> ${{this.price}}</li>
       </ul>
     </div>
   </div>
 </div>
 {{/each}}
+

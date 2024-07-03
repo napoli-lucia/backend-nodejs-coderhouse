@@ -17,7 +17,9 @@ const viewHomeProductsCtrl = (req, res) => {
 //** Vista de todos los productos EN TIEMPO REAL**/
 const viewRealTimeProductsCtrl = (req, res) => {
     productService.getAllProducts().then(result => {
-        res.render("realTimeProducts", { products: result })
+        res.render("realTimeProducts", { 
+            products: result,
+            user: req.session.user})
     }).catch(err => {
         req.logger.error(`${err.message}`);
         httpResponse.BadRequest(res, err.message);

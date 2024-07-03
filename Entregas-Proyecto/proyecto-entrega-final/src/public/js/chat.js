@@ -11,10 +11,10 @@ let user=null
 if(!user){
     Swal.fire({
         title:"Bienvenido al chat del Ecommerce",
-        text:"Ingrese su mail",
+        text:"Ingrese su nombre",
         input:"text",
         inputValidator:(value)=>{
-          return !value && "Debe ingresar un mail para poder chatear";
+          return !value && "Debe ingresar un nombre para poder chatear";
         },
         allowOutsideClick: false
     })

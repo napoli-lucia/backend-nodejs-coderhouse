@@ -1,40 +1,54 @@
-<title>Products</title>
+<title>Supermarket: Products</title>
 
-<h1>Productos</h1>
+<h1 class="thirteen">Supermarket</h1>
 
-{{#if user}}
-<h3>Bienvenido {{user.first_name}} {{user.last_name}}</h3>
-<p>Email: {{user.email}}</p>
-{{#if user.age}}
-<p>Edad: {{user.age}}</p>
-{{/if}}
-<p>Rol: {{user.role}}</p>
-<form method="get" action="/api/session/logout">
-  <button class="logOutButton" type="submit">Logout</button>
-</form>
-<br/>
-<form method="get" action="http://localhost:8080/carts/{{user.cart}}">
-  <button class="myCartButton" type="submit">Ver mi carrito</button>
-</form>
+<div class="container">
+  {{#if user}}
+  <h3>Bienvenido {{user.first_name}} {{user.last_name}}</h3>
+  <p>Email: {{user.email}}</p>
+  {{#if user.age}}
+  <p>Edad: {{user.age}}</p>
+  {{/if}}
+  <p>Rol: {{user.role}}</p>
+  <form method="get" action="http://localhost:8080/profile">
+    <button class="prof" type="submit">Ver mi perfil</button>
+  </form>
+  <br />
+  <form method="get" action="/api/session/logout">
+    <button class="logOutButton" type="submit">Logout</button>
+  </form>
+  <br />
+  <form method="get" action="http://localhost:8080/carts/{{user.cart}}">
+    <button class="myCartButton" type="submit">Ver mi carrito</button>
+  </form>
+  <br />
+  <form method="get" action="http://localhost:8080/realTimeProducts">
+    <button class="goToRealProds" type="submit">Productos en tiempo real</button>
+  </form>
+  <br />
+  <form method="get" action="http://localhost:8080/chat">
+    <button class="chat" type="submit">Chat</button>
+  </form>
+  {{/if}}
 
-{{/if}}
+</div>
 {{!-- <p>Carrito: {{user.cart}}</p> --}}
 
 
 
 <div class="containerFiltros">
   <form id="filter-products" method="GET">
-    <label for="limit">Limit:</label>
+    <label for="limit">Limite:</label>
     <input type="number" name="limit" id="limit" value="limit" placeholder="10">
 
-    <label for="sort">Sort:</label>
+    <label for="sort">Orden:</label>
     <select name="sort" id="sort">
       <option value="Ascendente">Ascendente</option>
       <option value="Descendente">Descendente</option>
       <option selected value=null>Ninguno</option>
     </select>
 
-    <label for="query">Category:</label>
+    <label for="query">Categoria:</label>
     <input type="text" name="query" id="query" placeholder="Ingrese categoría">
 
     <button type="submit" class="searchButton">Buscar</button>
@@ -47,14 +61,14 @@
     <img src={{this.thumbnails}} alt="Producto {{this.title}}"
       onerror="this.onerror=null; this.src='./images/no-image.jpg'; this.alt='image no available';">
     <div class="info">
-      <ul>
-        <li>ID: {{this.id}}</li>
+      <ul class="product-list">
+        <li>ID: {{this._id}}</li>
         <li>Titulo: {{this.title}}</li>
         <li>Descripcion: {{this.description}}</li>
         <li>Codigo: {{this.code}}</li>
         <li>Stock: {{this.stock}}</li>
         <li>Categoria: {{this.category}}</li>
-        <li>Precio: ${{this.price}}</li>
+        <li><b>Precio: ${{this.price}}</b></li>
       </ul>
     </div>
     <form method="post" action="http://localhost:8080/api/carts/{{../user.cart}}/product/{{this.id}}" id="addToCart">
@@ -66,12 +80,12 @@
 
 <div class="container">
   {{#if hasPrevPage}}
-  <a class="link" href="{{prevLink}}">Prev</a>
+  <a class="link" href="{{prevLink}}">Previo</a>
   {{/if}}
 
   <a class="link">Página {{page}} de {{totalPages}}</a>
 
   {{#if hasNextPage}}
-  <a class="link" href="{{nextLink}}">Next</a>
+  <a class="link" href="{{nextLink}}">Siguiente</a>
   {{/if}}
 </div>

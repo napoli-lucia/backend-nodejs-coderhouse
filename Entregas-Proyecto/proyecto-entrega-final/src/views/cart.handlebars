@@ -1,12 +1,22 @@
-<title>Mi carrito</title>
+<title>Supermarket: Mi carrito</title>
 
-<h1>Mi carrito</h1>
+<h1 class="thirteen">Supermarket</h1>
 
-<h2>Mis productos</h2>
+<div class="container">
+  <h1>Mi carrito</h1>
 
-<form method="post" action="http://localhost:8080/api/carts/{{user.cart}}/purchase" id="purchaseCart">
-  <button class="purchaseButton" type="submit">Comprar carrito</button>
-</form>
+  <h2>Mis productos</h2>
+
+  <form method="get" action="http://localhost:8080/products">
+    <button class="goToProds" type="submit">Volver a home</button>
+  </form>
+<br>
+  <form method="post" action="http://localhost:8080/api/carts/{{user.cart}}/purchase" id="purchaseCart">
+    <button class="purchaseButton" type="submit">Comprar carrito</button>
+  </form>
+
+</div>
+
 
 {{#each products}}
 <div class="container">

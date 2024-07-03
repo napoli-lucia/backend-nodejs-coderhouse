@@ -3,7 +3,7 @@ import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import jwt from "passport-jwt";
 import usersModel from "../dao/models/users.model.js"
-import { userService } from "../repository/index.js";
+import { userService, cartService } from "../repository/index.js";
 import { SECRET_JWT } from "../utils/jwt.js";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./config.js"
 
@@ -108,6 +108,7 @@ const initializePassport = () => {
               email: profile._json?.email,
               age: 0,
               password: "",
+              cart: (await cartService.addCart()).cart
             };
             let newUser = await usersModel.create(addNewUser);
             done(null, newUser);

@@ -1,13 +1,27 @@
-<h1>Solo Administrador</h1>
+<title>Supermarket: Admin</title>
 
-<h3>Usuarios</h3>
+<h1 class="thirteen">Supermarket</h1>
 
-<h2>Elimine un usuario</h2>
-<form id="delete-user" method="delete" class="container">
-    <label>Mail usuario: </label> 
-    <input id="user-email" type="text"/>
+<div class="container">
+  <h1>Solo Administrador</h1>
+  <form action="/api/session/logout" method="get">
+    <button type="submit">Logout</button>
+  </form>
+  <br />
+  <form method="get" action="http://localhost:8080/realTimeProducts">
+    <button class="goToRealProds" type="submit">Productos en tiempo real</button>
+  </form>
+  <br />
+
+  <h2>Elimine un usuario</h2>
+  <form id="delete-user" method="delete" class="container">
+    <label>Mail usuario: </label>
+    <input id="user-email" type="text" />
     <button id="send-delete">Eliminar</button>
-</form>
+  </form>
+
+</div>
+
 
 
 {{#each users}}
@@ -24,10 +38,11 @@
     <div>
       <label for="role-{{@index}}">Rol:</label>
       <select name="role" id="role-{{@index}}" data-email="{{this.email}}" class="roleSelect">
-        <option value="USER" >USER</option>
-        <option value="PREMIUM" >PREMIUM</option>
+        <option value="USER">USER</option>
+        <option value="PREMIUM">PREMIUM</option>
       </select>
-      <form method="post" action="http://localhost:8080/api/session/{{this.email}}" id="changeRole-{{@index}}" class="changeRoleForm">
+      <form method="post" action="http://localhost:8080/api/session/{{this.email}}" id="changeRole-{{@index}}"
+        class="changeRoleForm">
         <input type="hidden" name="role" value="{{this.role}}">
         <button class="roleButton" type="submit">Cambiar rol</button>
       </form>

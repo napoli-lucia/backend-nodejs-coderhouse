@@ -62,7 +62,7 @@ const loginCtrl = async (req, res, next) => {
         maxAge: 30 * 60 * 1000,
         httpOnly: true
       })
-      .redirect("/realTimeProducts");
+      .redirect("/justAdmin");
     }
 
     return res
@@ -225,6 +225,7 @@ const githubCtrl = async (req, res) => { };
 const githubCallbackCtrl = async (req, res) => {
   try {
     req.session.user = req.user;
+    console.log("🚀 ~ githubCallbackCtrl ~ req.session.user:", req.session.user);
     res.redirect("/products");
   } catch (error) {
     req.logger.error(`${error.message}`);
